@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@iconify/react": "^3.2.2",
     "daisyui": "^2.19.1",
     "next": "12.2.2",
     "react": "18.2.0",

@@ -1,5 +1,6 @@
-import { Icon } from "@iconify/react"
-import Image from "next/image"
+import { Icon } from "@iconify/react";
+import Image from "next/image";
+
 export default function Overview() {
     return (
         <>

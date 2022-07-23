@@ -11,7 +11,7 @@ export default function Listings() {
         <div className="w-[95%] bg-gray-400 p-28 m-10">hi</div>
         <div className="space-y-10">
         <div className="flex gap-10 justify-center">
-        <Search />
+        <Search width = "w-1/2" />
         <Filters />
         </div>
         <div className="grid lg:grid-cols-3 place-items-center gap-y-20">

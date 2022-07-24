@@ -3,7 +3,7 @@ import React from "react";
 
 const Navbar = () => {
   return (
-    <header class="sticky top-0 right-0 left-0 text-neutral-focus bg-primary-content">
+    <header class="sticky top-0 right-0 left-0 text-neutral-focus bg-primary-content z-50">
       <div class="container mx-auto flex flex-wrap px-5 py-3 flex-col md:flex-row items-center">
         <Link href="/">
           <span class="ml-3 title-font font-semibold text-secondary text-2xl cursor-pointer hover:scale-105 transition-all">
@@ -11,7 +11,7 @@ const Navbar = () => {
           </span>
         </Link>
         <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
-          <Link href="/">
+          <Link href="/listings">
             <a class="mr-5 hover:font-medium cursor-pointer">Companies</a>
           </Link>
           <Link href="/">

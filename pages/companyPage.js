@@ -1,15 +1,19 @@
+import { useState } from "react";
+import { Icon } from "@iconify/react";
 import Head from "next/head";
 import Image from "next/image";
-import { Icon } from "@iconify/react";
 import Overview from "../components/companyDetails/overview";
 import Funding from "../components/companyDetails/funding";
 import Navbar from "../components/commons/Navbar";
+import Jobs from "../components/companyDetails/jobs";
 
 export default function Company() {
+  const [menu, setMenu] = useState("overview");
+
   return (
-    <>
+    <div className="w-full h-screen flex flex-col overflow-auto">
       <Navbar />
-      <div className="w-full h-screen flex overflow-hidden">
+      <div className="w-full flex">
         <Head>
           <title>Company Name</title>
         </Head>
@@ -22,9 +26,9 @@ export default function Company() {
               height="150"
             />
           </div>
-          <div className="my-5 bg-base-300 h-full p-2 w-4/5 mx-auto rounded-md drop-shadow-xl">
-            <h1 className="text-xl p-1">Company Name</h1>
-            <div className="my-3">
+          <div className="bg-base-300 h-2/3 p-2 w-4/5 mx-auto rounded-md drop-shadow-xl">
+            <h1 className="text-xl p-1 font-medium">Company Name</h1>
+            <div className="my-2">
               <div className="mb-2">
                 <h1 className="font-bold text-lg">Website</h1>
                 <h2>discordapp.com</h2>
@@ -101,23 +105,24 @@ export default function Company() {
           </div>
           <div className="w-full h-full px-20">
             <ul className="flex gap-x-5">
-              <li className="font-bold text-xl px-4 py-2 border-b-2 border-slate-300 rounded-sm">
+              <li className={`font-bold text-xl px-4 py-2 border-b-2 ${menu == "overview" ? 'border-slate-300': 'border-transparent'} rounded-sm cursor-pointer`} onClick={() => setMenu("overview")}>
                 Overview
               </li>
-              <li className="font-bold text-xl px-4 py-2 border-b-2 border-slate-300 rounded-sm">
+              <li className={`font-bold text-xl px-4 py-2 border-b-2 ${menu == "funding" ? 'border-slate-300': 'border-transparent'} rounded-sm cursor-pointer`} onClick={() => setMenu("funding")}>
                 Funding
               </li>
-              <li className="font-bold text-xl px-4 py-2 border-b-2 border-slate-300 rounded-sm">
-                Jobs{" "}
-                <div className="badge badge-base text-white text-sm">12</div>
+              <li className={`font-bold text-xl px-4 py-2 border-b-2 ${menu == "jobs" ? 'border-slate-300': 'border-transparent'} rounded-sm cursor-pointer`} onClick={() => setMenu("jobs")}>
+                Jobs
+                <div className="badge badge-base text-white text-sm mx-2">12</div>
               </li>
             </ul>
             <div className="divider mt-0 items-start"></div>
-            {/* <Overview /> */}
-            <Funding />
+            {menu == "overview" && <Overview />}
+            {menu == "funding" && <Funding />}
+            {menu == "jobs" && <Jobs />}
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

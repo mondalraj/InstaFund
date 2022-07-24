@@ -25,8 +25,12 @@ const Navbar = () => {
           </Link>
         </nav>
         <div className="space-x-3">
-          <button class="btn btn-secondary btn-outline btn-sm">Login</button>
-          <button class="btn btn-secondary btn-sm">Register</button>
+          <Link href="/auth?type=login">
+            <button class="btn btn-secondary btn-outline btn-sm">Login</button>
+          </Link>
+          <Link href="/auth?type=register">
+            <button class="btn btn-secondary btn-sm">Register</button>
+          </Link>
         </div>
       </div>
     </header>

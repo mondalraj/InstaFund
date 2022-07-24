@@ -1,6 +1,9 @@
+import FundCard from "./fundCard";
+import InvestorCard from "./investorCard";
+
 export default function Funding(){
     return (
-        <div className="w-2/3 flex mx-auto">
+        <div className="w-2/3 flex flex-col mx-auto">
             <div className="stats shadow bg-slate-700">
                 <div className="stat">
                     <div className="stat-figure">
@@ -22,6 +25,25 @@ export default function Funding(){
                     </div>
                     <div className="stat-title text-white uppercase text-2xl">Expected</div>
                     <div className="stat-value text-white text-[1.7rem]">$420 M</div>
+                </div>
+            </div>
+            <div className="my-4">
+                <h2 className="text-2xl font-medium my-4">Rounds</h2>
+                <div className="flex flex-col">
+                    <FundCard recent={true} />
+                    <FundCard recent={false} />
+                    <FundCard recent={false} />
+                    <FundCard recent={false} />
+                </div>
+            </div>
+            <div className="my-4">
+                <h2 className="text-2xl font-medium my-4">Investors</h2>
+                <div className="grid grid-cols-3 gap-6">
+                    <InvestorCard />
+                    <InvestorCard />
+                    <InvestorCard />
+                    <InvestorCard />
+                    <InvestorCard />
                 </div>
             </div>
         </div>

@@ -13,7 +13,7 @@ const auth = () => {
   return (
     <div>
       <Navbar />
-      <div className="container mx-auto flex justify-center items-stretch mt-36 h-[60vh] ">
+      <div className="container mx-auto flex justify-center items-stretch mt-24 min-h-[60vh] ">
         <div className="left-col w-1/3 rounded-l-xl shadow-xl bg-gray-900 p-5">
           <div class="tabs">
             <a

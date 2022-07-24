@@ -5,7 +5,7 @@ export default function InvestorCard() {
                 <h3 className="text-lg text-white font-medium">Investor name</h3>
                 <h3 className="">Designation</h3>
             </div>
-            <div class="w-10 rounded-full border-2 border-white">
+            <div className="w-10 rounded-full border-2 border-white">
                 <img src="https://placeimg.com/142/142/people" className="rounded-full" />
             </div>
         </div>

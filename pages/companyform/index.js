@@ -18,11 +18,8 @@ export default function Companyform() {
     }
   }, []);
   const onSubmit = (data) => {
-    if (
-      window.confirm(
-        "Are you sure you want to submit this part of the form and move ahead as you would not be able to refill this again."
-      )
-    ) {
+    let ans = window.confirm("Are you sure you want to submit this part of the form and move ahead as you would not be able to refill this again.")
+    if (ans) {
       localStorage.setItem("formData", JSON.stringify(data));
       router.push("/companyform/funding");
     }

@@ -15,15 +15,15 @@ const auth = () => {
       <Navbar />
       <div className="container mx-auto flex justify-center items-stretch mt-24 min-h-[60vh] ">
         <div className="left-col w-1/3 rounded-l-xl shadow-xl bg-gray-900 p-5">
-          <div class="tabs">
+          <div className="tabs">
             <a
-              class={`tab tab-bordered ${type === "login" ? "" : "tab-active"}`}
+              className={`tab tab-bordered ${type === "login" ? "" : "tab-active"}`}
               onClick={() => router.push("/auth?type=register")}
             >
               Register
             </a>
             <a
-              class={`tab tab-bordered ${
+              className={`tab tab-bordered ${
                 type === "register" ? "" : "tab-active"
               }`}
               onClick={() => router.push("/auth?type=login")}

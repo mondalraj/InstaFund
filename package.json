@@ -13,7 +13,8 @@
     "daisyui": "^2.19.1",
     "next": "12.2.2",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.33.1"
   },
   "devDependencies": {
     "@iconify/react": "^3.2.2",

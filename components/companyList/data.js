@@ -356,3 +356,13 @@ export const location = [
   "Zambia",
   "Zimbabwe",
 ];
+
+export const fundingTypes = [
+  "Series A",
+  "Series B",
+  "Series C",
+  "Series D",
+  "Series E",
+  "Series F",
+  "Series G",
+]

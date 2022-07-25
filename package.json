@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@iconify/react": "^3.2.2",
+    "@supabase/supabase-js": "^1.35.4",
     "daisyui": "^2.19.1",
     "next": "12.2.2",
+    "notiflix": "^3.2.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.33.1"

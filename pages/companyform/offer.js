@@ -54,7 +54,7 @@ export default function Offer() {
                       required
                       {...register("ask")}
                     />
-                    <span className="btn btn-accent">XTZ</span>
+                    <span className="btn btn-accent">tez</span>
                   </label>
                 </div>
                 <div className="form-control w-full">

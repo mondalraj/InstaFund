@@ -9,8 +9,8 @@ export default function funding() {
     {
       companyName: "",
       dateOfFunding: "",
-      amountInvested: 0,
-      equityOwned: 0,
+      amountInvested: null,
+      equityOwned: null,
       investorPhotoUrl: "",
     },
   ]);
@@ -22,7 +22,7 @@ export default function funding() {
       memberPhotoUrl: "",
       linkedin: "",
       twitter: "",
-      description:"",
+      description: "",
     },
   ]);
 
@@ -38,6 +38,7 @@ export default function funding() {
     const list = [...inputList];
     list[index][name] = value;
     setInputList(list);
+    console.log(inputList);
   };
 
   const handleTeamInputChange = (e, index) => {
@@ -69,8 +70,8 @@ export default function funding() {
       {
         companyName: "",
         dateOfInvestment: "",
-        amountInvested: 0,
-        equityOwned: 0,
+        amountInvested: null,
+        equityOwned: null,
         investorPhotoUrl: "",
       },
     ]);
@@ -85,7 +86,7 @@ export default function funding() {
         memberPhotoUrl: "",
         linkedin: "",
         twitter: "",
-        description:"",
+        description: "",
       },
     ]);
   };
@@ -101,25 +102,31 @@ export default function funding() {
             <div className="flex justify-between">
               <p className="text-2xl font-medium">Past Investments:</p>
               <button className="btn btn-primary" onClick={handleAddClick}>
-                <Icon icon="ant-design:plus-outlined" className="text-2xl mr-2" /> Add new Investment
+                <Icon
+                  icon="ant-design:plus-outlined"
+                  className="text-2xl mr-2"
+                />{" "}
+                Add new Investment
               </button>
             </div>
-            <form className="flex flex-col px-10" onSubmit={() => handleSubmit()}>
+            <form
+              className="flex flex-col px-10"
+              onSubmit={() => handleSubmit()}
+            >
               {inputList.map((x, i) => {
                 return (
                   <div className="flex flex-col" key={i}>
                     <p className="text-lg font-medium">Investment {i + 1}</p>
                     <div className="lg:grid grid-cols-3 gap-5 py-2 w-full">
-                    <div className="form-control w-full max-w-xs">
+                      <div className="form-control w-full max-w-xs">
                         <label className="label">
-                          <span className="label-text">
-                            Company Name
-                          </span>
+                          <span className="label-text">Company Name</span>
                         </label>
                         <input
                           type="text"
                           name="companyName"
                           onChange={(e) => handleInputChange(e, i)}
+                          value={x.companyName}
                           placeholder="Type here"
                           className="input input-bordered w-full max-w-xs"
                           required
@@ -133,6 +140,7 @@ export default function funding() {
                           type="date"
                           name="dateOfInvestment"
                           onChange={(e) => handleInputChange(e, i)}
+                          value={x.dateOfInvestment}
                           placeholder="Type here"
                           className="input input-bordered w-full max-w-xs"
                           required
@@ -146,6 +154,7 @@ export default function funding() {
                           type="url"
                           name="investorPhotoUrl"
                           onChange={(e) => handleInputChange(e, i)}
+                          value={x.investorPhotoUrl}
                           placeholder="www.example.com"
                           className="input input-bordered w-full "
                           required
@@ -162,6 +171,7 @@ export default function funding() {
                             placeholder="0.1"
                             className="input input-bordered"
                             onChange={(e) => handleInputChange(e, i)}
+                            value={x.amountInvested}
                             required
                           />
                           <span className="btn btn-accent">TEZ</span>
@@ -178,6 +188,7 @@ export default function funding() {
                             placeholder="10"
                             className="input input-bordered"
                             onChange={(e) => handleInputChange(e, i)}
+                            value={x.equityOwned}
                             required
                           />
                           <span className="btn btn-accent">%</span>
@@ -210,10 +221,17 @@ export default function funding() {
             <div className="flex justify-between items-center">
               <p className="text-2xl font-medium">Team Members:</p>
               <button className="btn btn-primary" onClick={handleTeamAddClick}>
-                <Icon icon="ant-design:plus-outlined" className="text-2xl mr-2" /> Add new Member
+                <Icon
+                  icon="ant-design:plus-outlined"
+                  className="text-2xl mr-2"
+                />{" "}
+                Add new Member
               </button>
             </div>
-            <form className="flex flex-col px-10" onSubmit={() => handleSubmit()}>
+            <form
+              className="flex flex-col px-10"
+              onSubmit={() => handleSubmit()}
+            >
               {memberList.map((x, index) => {
                 return (
                   <div className="flex flex-col" key={index}>
@@ -221,14 +239,13 @@ export default function funding() {
                     <div className="lg:grid grid-cols-3 gap-5 py-2 w-full">
                       <div className="form-control w-full max-w-xs">
                         <label className="label">
-                          <span className="label-text">
-                            Person Name
-                          </span>
+                          <span className="label-text">Person Name</span>
                         </label>
                         <input
                           type="text"
                           name="fullName"
                           onChange={(e) => handleTeamInputChange(e, index)}
+                          value={x.fullName}
                           placeholder="Enter full name"
                           className="input input-bordered w-full max-w-xs"
                           required
@@ -236,14 +253,13 @@ export default function funding() {
                       </div>
                       <div className="form-control w-full max-w-xs">
                         <label className="label">
-                          <span className="label-text">
-                            Designation
-                          </span>
+                          <span className="label-text">Designation</span>
                         </label>
                         <input
                           type="text"
                           name="designation"
                           onChange={(e) => handleTeamInputChange(e, index)}
+                          value={x.designation}
                           placeholder="Enter Designation"
                           className="input input-bordered w-full max-w-xs"
                           required
@@ -257,6 +273,7 @@ export default function funding() {
                           type="url"
                           name="memberPhotoUrl"
                           onChange={(e) => handleTeamInputChange(e, index)}
+                          value={x.memberPhotoUrl}
                           placeholder="www.example.com"
                           className="input input-bordered w-full "
                           required
@@ -270,6 +287,7 @@ export default function funding() {
                           type="url"
                           name="linkedin"
                           onChange={(e) => handleTeamInputChange(e, index)}
+                          value={x.linkedin}
                           placeholder="Type here"
                           className="input input-bordered w-full"
                         />
@@ -282,6 +300,7 @@ export default function funding() {
                           type="url"
                           name="twitter"
                           onChange={(e) => handleTeamInputChange(e, index)}
+                          value={x.twitter}
                           placeholder="Type here"
                           className="input input-bordered w-full"
                         />
@@ -290,12 +309,13 @@ export default function funding() {
                       <div className="form-control col-span-3 w-full mx-auto">
                         <label className="label">
                           <span className="label-text">
-                              Small Description here
+                            Small Description here
                           </span>
                         </label>
                         <textarea
                           name="description"
                           onChange={(e) => handleTeamInputChange(e, index)}
+                          value={x.description}
                           className="textarea h-16 resize-none"
                           minLength={40}
                           maxLength={120}
@@ -317,11 +337,11 @@ export default function funding() {
                 );
               })}
               <div className="flex justify-end">
-                  <input
-                    type="submit"
-                    value="Submit"
-                    className="btn btn-primary w-max px-10"
-                  />
+                <input
+                  type="submit"
+                  value="Submit"
+                  className="btn btn-primary w-max px-10"
+                />
               </div>
             </form>
           </div>

@@ -26,7 +26,7 @@ export default function Company() {
               height="150"
             />
           </div>
-          <div className="bg-base-300 h-2/3 p-2 w-4/5 mx-auto rounded-md drop-shadow-xl">
+          <div className="bg-base-300 p-2 w-4/5 mx-auto rounded-md drop-shadow-xl">
             <h1 className="text-xl p-1 font-medium">Company Name</h1>
             <div className="my-2">
               <div className="mb-2">
@@ -105,15 +105,32 @@ export default function Company() {
           </div>
           <div className="w-full h-full px-20">
             <ul className="flex gap-x-5">
-              <li className={`font-bold text-xl px-4 py-2 border-b-2 ${menu == "overview" ? 'border-slate-300': 'border-transparent'} rounded-sm cursor-pointer`} onClick={() => setMenu("overview")}>
+              <li
+                className={`font-bold text-xl px-4 py-2 border-b-2 ${
+                  menu == "overview" ? "border-slate-300" : "border-transparent"
+                } rounded-sm cursor-pointer`}
+                onClick={() => setMenu("overview")}
+              >
                 Overview
               </li>
-              <li className={`font-bold text-xl px-4 py-2 border-b-2 ${menu == "funding" ? 'border-slate-300': 'border-transparent'} rounded-sm cursor-pointer`} onClick={() => setMenu("funding")}>
+              <li
+                className={`font-bold text-xl px-4 py-2 border-b-2 ${
+                  menu == "funding" ? "border-slate-300" : "border-transparent"
+                } rounded-sm cursor-pointer`}
+                onClick={() => setMenu("funding")}
+              >
                 Funding
               </li>
-              <li className={`font-bold text-xl px-4 py-2 border-b-2 ${menu == "jobs" ? 'border-slate-300': 'border-transparent'} rounded-sm cursor-pointer`} onClick={() => setMenu("jobs")}>
+              <li
+                className={`font-bold text-xl px-4 py-2 border-b-2 ${
+                  menu == "jobs" ? "border-slate-300" : "border-transparent"
+                } rounded-sm cursor-pointer`}
+                onClick={() => setMenu("jobs")}
+              >
                 Jobs
-                <div className="badge badge-base text-white text-sm mx-2">12</div>
+                <div className="badge badge-base text-white text-sm mx-2">
+                  12
+                </div>
               </li>
             </ul>
             <div className="divider mt-0 items-start"></div>

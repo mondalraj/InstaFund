@@ -9,16 +9,16 @@
   font-family: 'Inter', sans-serif;
 }
 
-/* div {
+div {
   -ms-overflow-style: none; 
   scrollbar-width: none;
 }
 
 div::-webkit-scrollbar {
   display: none; 
-} */
+}
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   -webkit-appearance: none;
   width: 10px;
   border-radius: 5px;
@@ -28,7 +28,7 @@ div::-webkit-scrollbar {
   border-radius: 5px;
   background: #000;
   box-shadow: 0 0 1px rgba(77, 77, 77, 0.5);
-}
+} */
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

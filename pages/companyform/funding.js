@@ -55,10 +55,10 @@ export default function funding() {
     setInputList([
       ...inputList,
       {
-        amountRaised: 0,
+        amountRaised: null,
         fundingType: "",
         dateOfFunding: "",
-        valuation: 0,
+        valuation: null,
         investorName: "",
         investorPhotoUrl: "",
       },

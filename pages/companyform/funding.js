@@ -8,10 +8,10 @@ import { Icon } from "@iconify/react";
 export default function funding() {
   const [inputList, setInputList] = useState([
     {
-      amountRaised: 0,
+      amountRaised: null,
       fundingType: "",
       dateOfFunding: "",
-      valuation: 0,
+      valuation: null,
       investorName: "",
       investorPhotoUrl: "",
     },
@@ -56,10 +56,10 @@ export default function funding() {
     setInputList([
       ...inputList,
       {
-        amountRaised: 0,
+        amountRaised: "",
         fundingType: "",
         dateOfFunding: "",
-        valuation: 0,
+        valuation: "",
         investorName: "",
         investorPhotoUrl: "",
       },
@@ -91,12 +91,13 @@ export default function funding() {
                           <input
                             name="amountRaised"
                             type="number"
+                            value={x.amountRaised}
                             placeholder="0.01"
                             className="input input-bordered"
                             onChange={(e) => handleInputChange(e, i)}
                             required
                           />
-                          <span className="btn btn-accent">XTZ</span>
+                          <span className="btn btn-accent">tez</span>
                         </label>
                       </div>
                       <div className="form-control w-full max-w-xs">
@@ -107,6 +108,7 @@ export default function funding() {
                           name="fundingType"
                           className="select select-bordered"
                           onChange={(e) => handleInputChange(e, i)}
+                          value={x.fundingType}
                           required
                         >
                           <option disabled selected>
@@ -128,6 +130,7 @@ export default function funding() {
                         <input
                           type="date"
                           name="dateOfFunding"
+                          value={x.dateOfFunding}
                           onChange={(e) => handleInputChange(e, i)}
                           placeholder="Type here"
                           className="input input-bordered w-full max-w-xs"
@@ -141,8 +144,9 @@ export default function funding() {
                         <input
                           type="number"
                           name="valuation"
+                          value={x.valuation}
                           onChange={(e) => handleInputChange(e, i)}
-                          placeholder="10,000 XTZ"
+                          placeholder="10,000 tez"
                           className="input input-bordered w-full max-w-xs"
                           required
                         />
@@ -155,6 +159,7 @@ export default function funding() {
                         </label>
                         <input
                           type="text"
+                          value={x.investorName}
                           name="investorName"
                           onChange={(e) => handleInputChange(e, i)}
                           placeholder="John Doe (CEO)"
@@ -168,6 +173,7 @@ export default function funding() {
                         </label>
                         <input
                           type="url"
+                          value={x.investorPhotoUrl}
                           name="investorPhotoUrl"
                           onChange={(e) => handleInputChange(e, i)}
                           placeholder="www.example.com"
@@ -176,7 +182,7 @@ export default function funding() {
                         />
                       </div>
                       <div className="mt-8">
-                        {inputList.length !== 0 && (
+                        {inputList.length !== 1 && (
                           <button
                             className="flex justify-center items-center  text-sm font-medium text-[#F38585]"
                             onClick={() => handleRemoveClick(i)}

@@ -50,7 +50,7 @@ export default function Home() {
           <div className="flex flex-wrap -m-4 text-center">
             <div className="p-4 sm:w-1/4 w-1/2">
               <h2 className="title-font font-medium sm:text-4xl text-3xl text-white">
-                4.5K
+                14.5K
               </h2>
               <p className="leading-relaxed">Users</p>
             </div>
@@ -68,7 +68,7 @@ export default function Home() {
             </div>
             <div className="p-4 sm:w-1/4 w-1/2">
               <h2 className="title-font font-medium sm:text-4xl text-3xl text-white">
-                35k tez
+                535k tez
               </h2>
               <p className="leading-relaxed">Funds Raised</p>
             </div>
@@ -164,7 +164,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <Link href="/auth">
+          <Link href="/auth?type=register">
             <button className="flex mx-auto mt-16 btn btn-secondary">
               Get Started
             </button>

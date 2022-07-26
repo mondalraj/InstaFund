@@ -29,3 +29,13 @@ div::-webkit-scrollbar {
   background: #000;
   box-shadow: 0 0 1px rgba(77, 77, 77, 0.5);
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}

@@ -79,10 +79,10 @@ export default function funding() {
             <form className="flex flex-col" onSubmit={() => handleSubmit()}>
               {inputList.map((x, i) => {
                 return (
-                  <div className="flex" key={i}>
-                    <p className="flex items-center">{i + 1}.</p>
-                    <div className="lg:grid grid-cols-3 gap-5  py-5">
-                      <div className="form-control">
+                  <div className="flex flex-col" key={i}>
+                    <p className="flex items-center">Round {i + 1}</p>
+                    <div className="lg:grid grid-cols-3 gap-5  py-3">
+                      <div className="form-control w-full max-w-xs">
                         <label className="label">
                           <span className="label-text">Amount Raised</span>
                         </label>
@@ -92,7 +92,7 @@ export default function funding() {
                             type="number"
                             value={x.amountRaised}
                             placeholder="0.01"
-                            className="input input-bordered"
+                            className="input input-bordered w-full max-w-xs"
                             onChange={(e) => handleInputChange(e, i)}
                             required
                           />
@@ -105,7 +105,7 @@ export default function funding() {
                         </label>
                         <select
                           name="fundingType"
-                          className="select select-bordered"
+                          className="select select-bordered w-full max-w-xs"
                           onChange={(e) => handleInputChange(e, i)}
                           required
                           value={x.fundingType}
@@ -166,7 +166,7 @@ export default function funding() {
                           required
                         />
                       </div>
-                      <div className="form-control w-full mx-auto">
+                      <div className="form-control w-full mx-w-xs">
                         <label className="label">
                           <span className="label-text">Investor Photo URL</span>
                         </label>
@@ -176,11 +176,11 @@ export default function funding() {
                           name="investorPhotoUrl"
                           onChange={(e) => handleInputChange(e, i)}
                           placeholder="www.example.com"
-                          className="input input-bordered w-full "
+                          className="input input-bordered w-full max-w-xs"
                           required
                         />
                       </div>
-                      <div className="mt-8">
+                      <div className="my-4">
                         {inputList.length !== 1 && (
                           <button
                             className="flex justify-center items-center  text-sm font-medium text-[#F38585]"

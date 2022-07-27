@@ -169,7 +169,7 @@ export default function funding() {
                             name="amountInvested"
                             type="number"
                             placeholder="0.1"
-                            className="input input-bordered"
+                            className="input input-bordered w-full max-w-xs"
                             onChange={(e) => handleInputChange(e, i)}
                             value={x.amountInvested}
                             required
@@ -186,7 +186,7 @@ export default function funding() {
                             name="equityOwned"
                             type="number"
                             placeholder="10"
-                            className="input input-bordered"
+                            className="input input-bordered w-full max-w-xs"
                             onChange={(e) => handleInputChange(e, i)}
                             value={x.equityOwned}
                             required

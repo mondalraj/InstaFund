@@ -15,7 +15,8 @@ formState: { errors },
 const router = useRouter();
 
 useEffect(() => {
-    if (localStorage.getItem("investorData")) {
+    const data = localStorage.getItem("investorData");
+    if (data) {
         router.push("/investorform/details");
     }
 }, []);

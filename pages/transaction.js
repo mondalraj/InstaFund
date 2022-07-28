@@ -2,16 +2,19 @@ import { Icon } from "@iconify/react";
 import Image from "next/image";
 import Head from "next/head";
 import Navbar from "../components/commons/Navbar";
+import ReadMore from "../components/transactions/readMore";
 
 export default function Transaction() {
+
+    let text = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore, impedit at sint hic cupiditate, dolorum assumenda possimus deleniti excepturi dignissimos totam provident magnam quaerat aliquam adipisci dolore nostrum enim asperiores sit similique nam voluptates! Deserunt id nam minus laudantium tempore consectetur nemo autem. Harum ipsum neque libero, inventore ad nihil"
   return (
-    <div className="w-full h-screen flex flex-col">
+    <div className="w-full h-screen flex flex-col overflow-hidden">
       <Head>
         <title>Transactions</title>
       </Head>
       <Navbar />
-      <div className="w-5/6 bg-base-300 h-5/6 m-auto">
-        <div className="flex relative items-center gap-x-20 px-10">
+      <div className="w-5/6 bg-base-300 h-5/6 m-auto rounded-lg">
+        <div className="flex relative items-center gap-x-20 px-12 pt-5">
             <div className="flex items-center">
                 <div className="p-4 max-w-md max-h-fit">
                     <Image
@@ -62,9 +65,66 @@ export default function Transaction() {
             <button className="btn text-black hover:text-white btn-accent bg-white px-6 capitalize">Send Transaction</button>
             <button className="btn btn-success bg-white px-6 capitalize">Signed SAFE/SAFT</button>
         </div>
-        <div className="bg-red-500 px-20">
-            Hello Chat
-        </div>
+        <ul className=" bg-slate-500 flex flex-col h-full gap-y-10 px-20 py-4 overflow-auto">
+            <li className="flex justify-start">
+                <div className="bg-base-100 rounded-lg px-10 py-2 w-2/3 relative">
+                    <div className="absolute -top-3 -left-3">
+                        <Image
+                            src="/Company_Logo.png"
+                            alt="Investor Logo"
+                            width="30"
+                            height="30"
+                            className="rounded-full"
+                        />
+                    </div>
+                    <h1 className="text-lg font-medium text-primary-focus">Investor send a Proposal</h1>
+                    <ReadMore >
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore, impedit at sint hic cupiditate, dolorum assumenda 
+                        possimus deleniti excepturi dignissimos totam provident magnam quaerat aliquam adipisci dolore nostrum enim 
+                        asperiores sit similique nam voluptates! Deserunt id nam minus laudantium tempore consectetur nemo autem. 
+                        Harum ipsum neque libero, inventore ad nihil
+                    </ReadMore>
+                </div>
+            </li>
+            <li className="flex justify-end">
+                <div className="bg-base-100 rounded-lg px-10 py-2 w-2/3 relative">
+                    <div className="absolute -top-3 -right-3">
+                        <Image
+                            src="/Company_Logo.png"
+                            alt="Investor Logo"
+                            width="30"
+                            height="30"
+                            className="rounded-full"
+                        />
+                    </div>
+                    <h1 className="text-lg font-medium text-green-500">Company name schedule a meeting</h1>
+                    <p className="text-base py-2">
+                        Meeting Scheduled with Company Name at Monday, 11 July 2022, 5 pm - 6 pm
+                    </p>
+                    <button className="btn btn-primary">Join Meeting</button>
+                </div>
+            </li>
+            <li className="flex justify-start">
+                <div className="bg-base-100 rounded-lg px-10 py-2 w-2/3 relative">
+                    <div className="absolute -top-3 -left-3">
+                        <Image
+                            src="/Company_Logo.png"
+                            alt="Investor Logo"
+                            width="30"
+                            height="30"
+                            className="rounded-full"
+                        />
+                    </div>
+                    <h1 className="text-lg font-medium text-primary-focus">Investor send a Proposal</h1>
+                    <p className="text-base py-2">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore, impedit at sint hic cupiditate, dolorum assumenda 
+                        possimus deleniti excepturi dignissimos totam provident magnam quaerat aliquam adipisci dolore
+                        nostrum enim asperiores sit similique nam voluptates! Deserunt id nam minus laudantium tempore consectetur 
+                        nemo autem. Harum ipsum neque libero, inventore ad nihil.
+                    </p>
+                </div>
+            </li>
+        </ul>
       </div>
     </div>
   );

@@ -38,7 +38,6 @@ export default function funding() {
     const list = [...inputList];
     list[index][name] = value;
     setInputList(list);
-    console.log(inputList);
   };
 
   const handleTeamInputChange = (e, index) => {
@@ -209,13 +208,6 @@ export default function funding() {
                   </div>
                 );
               })}
-              {/* <div className="flex justify-end">
-                  <input
-                    type="submit"
-                    value="Submit"
-                    className="btn btn-primary w-max px-10"
-                  />
-              </div> */}
             </form>
             <div className="divider mt-0"></div>
             <div className="flex justify-between items-center">
@@ -336,14 +328,14 @@ export default function funding() {
                   </div>
                 );
               })}
-              <div className="flex justify-end">
+            </form>
+            <div className="flex justify-end">
                 <input
                   type="submit"
                   value="Submit"
                   className="btn btn-primary w-max px-10"
                 />
-              </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>

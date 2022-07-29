@@ -9,7 +9,7 @@
   font-family: 'Inter', sans-serif;
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   -webkit-appearance: none;
   width: 10px;
   border-radius: 5px;
@@ -19,14 +19,14 @@
   border-radius: 5px;
   background: #000;
   box-shadow: 0 0 1px rgba(77, 77, 77, 0.5);
-}
+} */
 
 div {
   -ms-overflow-style: none; 
   scrollbar-width: none;
 }
 
-div::-webkit-scrollbar {
+::-webkit-scrollbar {
   display: none; 
 }
 

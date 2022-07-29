@@ -13,7 +13,7 @@ export default function Transaction() {
         <title>Transactions</title>
       </Head>
       <Navbar />
-      <div className="w-5/6 bg-base-300 h-5/6 m-auto rounded-lg">
+      <div className="flex flex-col w-5/6 bg-base-300 h-5/6 m-auto rounded-lg">
         <div className="flex relative items-center gap-x-20 px-12 pt-5">
             <div className="flex items-center">
                 <div className="p-4 max-w-md max-h-fit">
@@ -65,7 +65,7 @@ export default function Transaction() {
             <button className="btn text-black hover:text-white btn-accent bg-white px-6 capitalize">Send Transaction</button>
             <button className="btn btn-success bg-white px-6 capitalize">Signed SAFE/SAFT</button>
         </div>
-        <ul className=" bg-slate-500 flex flex-col h-full gap-y-10 px-20 py-4 overflow-auto">
+        <ul className="bg-base-200 flex flex-col gap-y-10 px-20 py-4 overflow-y-scroll">
             <li className="flex justify-start">
                 <div className="bg-base-100 rounded-lg px-10 py-2 w-2/3 relative">
                     <div className="absolute -top-3 -left-3">
@@ -122,6 +122,24 @@ export default function Transaction() {
                         nostrum enim asperiores sit similique nam voluptates! Deserunt id nam minus laudantium tempore consectetur 
                         nemo autem. Harum ipsum neque libero, inventore ad nihil.
                     </p>
+                </div>
+            </li>
+            <li className="flex justify-end">
+                <div className="bg-base-100 rounded-lg px-10 py-2 w-2/3 relative">
+                    <div className="absolute -top-3 -right-3">
+                        <Image
+                            src="/Company_Logo.png"
+                            alt="Investor Logo"
+                            width="30"
+                            height="30"
+                            className="rounded-full"
+                        />
+                    </div>
+                    <h1 className="text-lg font-medium text-green-500">Company name schedule a meeting</h1>
+                    <p className="text-base py-2">
+                        Meeting Scheduled with Company Name at Monday, 11 July 2022, 5 pm - 6 pm
+                    </p>
+                    <button className="btn btn-primary">Join Meeting</button>
                 </div>
             </li>
         </ul>

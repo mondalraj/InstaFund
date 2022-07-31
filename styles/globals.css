@@ -39,3 +39,7 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}

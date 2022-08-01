@@ -4,10 +4,11 @@ import { useRouter } from "next/router";
 import { Icon } from "@iconify/react";
 import Head from "next/head";
 import { Notify } from "notiflix";
+import { decode } from "base64-arraybuffer";
 
 export default function funding() {
   const submitRef = useRef();
-  const [isCompany, setIsCompany] = useState(false);
+  const [isCompany, setIsCompany] = useState(true);
   const [inputList, setInputList] = useState([
     {
       companyName: "",
@@ -31,11 +32,11 @@ export default function funding() {
 
   const router = useRouter();
 
-  useEffect(() => {
-    const investorData = JSON.parse(localStorage.getItem("investorData"));
-    if (!investorData) router.push("/investorform");
-    if (investorData && investorData.userType === "company") setIsCompany(true);
-  }, []);
+  // useEffect(() => {
+  //   const investorData = JSON.parse(localStorage.getItem("investorData"));
+  //   if (!investorData) router.push("/investorform");
+  //   if (investorData && investorData.userType === "company") setIsCompany(true);
+  // }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,6 +45,12 @@ export default function funding() {
     delete investorData.userType;
 
     try {
+      const { photo, picError } = await supabase.storage
+        .from("avatars")
+        .upload(`public/${investorData.name}.png`, decode("base64FileData"), {
+          contentType: "image/png",
+        });
+      if (picError) throw new Error("Something wrong with upload photo");
       const { data, error } = await supabase
         .from("Users")
         .insert([{ ...investorData }]);
@@ -197,6 +204,17 @@ export default function funding() {
                           className="input input-bordered w-full "
                           required
                         />
+                        <p className="text-xs m-1.5 text-gray-500">
+                          Upload photo{" "}
+                          <a
+                            href="https://imgur.com/upload"
+                            target="_blank"
+                            className="underline"
+                          >
+                            here
+                          </a>{" "}
+                          and submit a link
+                        </p>
                       </div>
                       <div className="form-control w-full max-w-xs">
                         <label className="label">
@@ -327,6 +345,17 @@ export default function funding() {
                               className="input input-bordered w-full "
                               required
                             />
+                            <p className="text-xs m-1.5 text-gray-500">
+                              Upload photo{" "}
+                              <a
+                                href="https://imgur.com/upload"
+                                target="_blank"
+                                className="underline"
+                              >
+                                here
+                              </a>{" "}
+                              and submit a link
+                            </p>
                           </div>
                           <div className="form-control w-full max-w-xs">
                             <label className="label">

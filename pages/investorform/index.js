@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import { Icon } from "@iconify/react";
 import { industries, location } from "../../components/companyList/data";
@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { Confirm } from "notiflix";
 
 export default function Investorform() {
+  const [photo, setPhoto] = useState();
   const {
     register,
     handleSubmit,
@@ -22,7 +23,19 @@ export default function Investorform() {
     }
   }, []);
 
-  const onSubmit = (data) => {
+  const getBase64 = async () => {
+    return new Promise((resolve, reject) => {
+      let reader = new FileReader();
+      reader.readAsDataURL(photo);
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+    });
+  };
+
+  const onSubmit = async (data) => {
+    const pic = await getBase64();
+    data = { ...data, photo: pic };
     Confirm.show(
       "Confirmation",
       "Are you really want to submit this form and move ahead as you would not be able to refill this again.",
@@ -57,12 +70,33 @@ export default function Investorform() {
                   data-tip="Add company logo / your photo here"
                 >
                   <label htmlFor="file-input">
-                    <Icon
-                      icon="ic:round-account-circle"
-                      className="text-8xl cursor-pointer"
-                    />
+                    {photo ? (
+                      <div className="relative">
+                        <img
+                          src={URL.createObjectURL(photo)}
+                          alt="Investor Pic"
+                          className="w-32 h-32 rounded-full object-cover"
+                        />
+                        <Icon
+                          icon="entypo:cross"
+                          className="absolute top-0 -right-5 text-xl cursor-pointer"
+                          onClick={() => setPhoto()}
+                        />
+                      </div>
+                    ) : (
+                      <Icon
+                        icon="ic:round-account-circle"
+                        className="text-9xl cursor-pointer"
+                      />
+                    )}
                   </label>
-                  <input type="file" id="file-input" className="hidden" />
+                  <input
+                    type="file"
+                    id="file-input"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => setPhoto(e.target.files[0])}
+                  />
                 </div>
               </div>
               <div className="lg:grid grid-cols-2 gap-y-5 justify-end items-center py-5">

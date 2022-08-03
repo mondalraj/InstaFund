@@ -96,6 +96,7 @@ export default function Investorform() {
                     accept="image/*"
                     className="hidden"
                     onChange={(e) => setPhoto(e.target.files[0])}
+                    required
                   />
                 </div>
               </div>
@@ -133,6 +134,7 @@ export default function Investorform() {
                     placeholder="Type here"
                     className="input input-bordered w-full max-w-xs"
                     required
+                    max={new Date().toISOString().split("T")[0]}
                     {...register("dob")}
                   />
                 </div>
@@ -154,9 +156,10 @@ export default function Investorform() {
                   </label>
                   <select
                     className="select select-bordered"
+                    defaultValue=""
                     {...register("location")}
                   >
-                    <option disabled selected>
+                    <option disabled value="">
                       Pick one
                     </option>
                     {location.map((data, index) => {

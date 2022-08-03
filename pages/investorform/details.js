@@ -1,14 +1,13 @@
+import Head from "next/head";
 import { useState, useEffect, useRef } from "react";
+import { Icon } from "@iconify/react";
 import { supabase } from "../../utils/supabaseClient";
 import { useRouter } from "next/router";
-import { Icon } from "@iconify/react";
-import Head from "next/head";
 import { Notify } from "notiflix";
-import { decode } from "base64-arraybuffer";
 
 export default function funding() {
   const submitRef = useRef();
-  const [isCompany, setIsCompany] = useState(true);
+  const [isCompany, setIsCompany] = useState(false);
   const [inputList, setInputList] = useState([
     {
       companyName: "",
@@ -40,45 +39,62 @@ export default function funding() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const investorData = JSON.parse(localStorage.getItem("investorData"));
+    const photoName = investorData.name.trim().split(" ").join("_");
     investorData["isCompany"] = isCompany;
     delete investorData.userType;
 
+    // Convert the proper Base64 encoding to recognize as image in database
+    const type = investorData.photo.split(";")[0].split("/")[1]; // To get the image type
     const imageBase64Str = investorData.photo.replace(/^.+,/, "");
-    const buf = Buffer.from(imageBase64Str, "base64");
+    const image = Buffer.from(imageBase64Str, "base64");
+    delete investorData.photo;
 
     try {
       const { pic, picError } = await supabase.storage
         .from("investor-avatars")
-        .upload(`${investorData.name}.png`, buf, {
-          cacheControl: "3600",
+        .upload(`${photoName}.${type}`, image, {
+          cacheControl: "1800",
           upsert: true,
-          contentType: "image/png",
+          contentType: `image/${type}`,
         });
+
       if (picError) throw new Error("Something wrong with upload photo");
-      console.log(pic);
-      // const { data, error } = await supabase
-      //   .from("Users")
-      //   .insert([{ ...investorData }]);
-      // if (error) throw new Error("Something went wrong");
-      // if (isCompany) {
-      //   memberList = memberList.map((item) => {
-      //     return { ...item, user_id: data[0].id };
-      //   });
-      //   const { teamData, teamError } = await supabase
-      //     .from("Team_members")
-      //     .insert(memberList);
-      //   if (teamError) throw new Error("Something went wrong with team");
-      // }
-      // inputList = inputList.map((item) => {
-      //   return { ...item, user_id: data[0].id };
-      // });
-      // const { investData, investError } = await supabase
-      //   .from("Investments")
-      //   .insert(inputList);
-      // if (investError) throw new Error("Something went wrong with investments");
-      // console.log("Success", data);
-      // router.push("/investor");
+
+      const { data, error } = await supabase.from("Users").insert([
+        {
+          ...investorData,
+          picUrl: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/investor-avatars/${photoName}.${type}`,
+        },
+      ]);
+
+      if (error) throw new Error("Something went wrong with user");
+
+      if (isCompany) {
+        memberList = memberList.map((item) => {
+          return { ...item, user_id: data[0].id };
+        });
+
+        const { teamData, teamError } = await supabase
+          .from("Team_members")
+          .insert(memberList);
+
+        if (teamError) throw new Error("Something went wrong with team");
+      }
+
+      inputList = inputList.map((item) => {
+        return { ...item, user_id: data[0].id };
+      });
+
+      const { investData, investError } = await supabase
+        .from("Investments")
+        .insert(inputList);
+
+      if (investError) throw new Error("Something went wrong with investments");
+
+      localStorage.removeItem("investorData");
+      router.push(`/investor/${data[0].id}`);
     } catch (error) {
       Notify.failure(error.message, { position: "top-right" });
     }
@@ -192,6 +208,7 @@ export default function funding() {
                           name="dateOfInvestment"
                           onChange={(e) => handleInputChange(e, i)}
                           value={x.dateOfInvestment}
+                          max={new Date().toISOString().split("T")[0]}
                           placeholder="Type here"
                           className="input input-bordered w-full max-w-xs"
                           required
@@ -230,10 +247,14 @@ export default function funding() {
                           <input
                             name="amountInvested"
                             type="number"
-                            placeholder="0.1"
+                            placeholder="1000"
+                            min={1000}
+                            step=".01"
                             className="input input-bordered w-full max-w-xs"
                             onChange={(e) => handleInputChange(e, i)}
-                            value={x.amountInvested}
+                            value={
+                              x.amountInvested == null ? "" : x.amountInvested
+                            }
                             required
                           />
                           <span className="btn btn-accent">TEZ</span>
@@ -248,9 +269,11 @@ export default function funding() {
                             name="equityOwned"
                             type="number"
                             placeholder="10"
+                            min={1}
+                            step=".01"
                             className="input input-bordered w-full max-w-xs"
                             onChange={(e) => handleInputChange(e, i)}
-                            value={x.equityOwned}
+                            value={x.equityOwned == null ? "" : x.equityOwned}
                             required
                           />
                           <span className="btn btn-accent">%</span>

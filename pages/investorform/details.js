@@ -32,11 +32,11 @@ export default function funding() {
 
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const investorData = JSON.parse(localStorage.getItem("investorData"));
-  //   if (!investorData) router.push("/investorform");
-  //   if (investorData && investorData.userType === "company") setIsCompany(true);
-  // }, []);
+  useEffect(() => {
+    const investorData = JSON.parse(localStorage.getItem("investorData"));
+    if (!investorData) router.push("/investorform");
+    if (investorData && investorData.userType === "company") setIsCompany(true);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,33 +44,39 @@ export default function funding() {
     investorData["isCompany"] = isCompany;
     delete investorData.userType;
 
+    const imageBase64Str = investorData.photo.replace(/^.+,/, "");
+    const buf = Buffer.from(imageBase64Str, "base64");
+
     try {
-      const { photo, picError } = await supabase.storage
-        .from("avatars")
-        .upload(`public/${investorData.name}.png`, decode("base64FileData"), {
+      const { pic, picError } = await supabase.storage
+        .from("investor-avatars")
+        .upload(`${investorData.name}.png`, buf, {
+          cacheControl: "3600",
+          upsert: true,
           contentType: "image/png",
         });
       if (picError) throw new Error("Something wrong with upload photo");
-      const { data, error } = await supabase
-        .from("Users")
-        .insert([{ ...investorData }]);
-      if (error) throw new Error("Something went wrong");
-      if (isCompany) {
-        memberList = memberList.map((item) => {
-          return { ...item, user_id: data[0].id };
-        });
-        const { teamData, teamError } = await supabase
-          .from("Team_members")
-          .insert(memberList);
-        if (teamError) throw new Error("Something went wrong with team");
-      }
-      inputList = inputList.map((item) => {
-        return { ...item, user_id: data[0].id };
-      });
-      const { investData, investError } = await supabase
-        .from("Investments")
-        .insert(inputList);
-      if (investError) throw new Error("Something went wrong with investments");
+      console.log(pic);
+      // const { data, error } = await supabase
+      //   .from("Users")
+      //   .insert([{ ...investorData }]);
+      // if (error) throw new Error("Something went wrong");
+      // if (isCompany) {
+      //   memberList = memberList.map((item) => {
+      //     return { ...item, user_id: data[0].id };
+      //   });
+      //   const { teamData, teamError } = await supabase
+      //     .from("Team_members")
+      //     .insert(memberList);
+      //   if (teamError) throw new Error("Something went wrong with team");
+      // }
+      // inputList = inputList.map((item) => {
+      //   return { ...item, user_id: data[0].id };
+      // });
+      // const { investData, investError } = await supabase
+      //   .from("Investments")
+      //   .insert(inputList);
+      // if (investError) throw new Error("Something went wrong with investments");
       // console.log("Success", data);
       // router.push("/investor");
     } catch (error) {

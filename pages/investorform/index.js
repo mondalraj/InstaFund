@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react";
 import { industries, location } from "../../components/companyList/data";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import { Confirm } from "notiflix";
+import { Confirm, Notify } from "notiflix";
 
 export default function Investorform() {
   const [photo, setPhoto] = useState();
@@ -34,6 +34,11 @@ export default function Investorform() {
   };
 
   const onSubmit = async (data) => {
+    if (!photo) {
+      Notify.failure("Please provide a photo", { position: "top-right" });
+      return;
+    }
+
     const pic = await getBase64();
     data = { ...data, photo: pic };
     Confirm.show(
@@ -96,7 +101,6 @@ export default function Investorform() {
                     accept="image/*"
                     className="hidden"
                     onChange={(e) => setPhoto(e.target.files[0])}
-                    required
                   />
                 </div>
               </div>

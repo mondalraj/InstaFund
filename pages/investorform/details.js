@@ -62,7 +62,7 @@ export default function funding() {
 
       if (picError) throw new Error("Something wrong with upload photo");
 
-      const { data, error } = await supabase.from("Users").insert([
+      const { data, error } = await supabase.from("Investors").insert([
         {
           ...investorData,
           picUrl: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/investor-avatars/${photoName}.${type}`,
@@ -92,6 +92,12 @@ export default function funding() {
         .insert(inputList);
 
       if (investError) throw new Error("Something went wrong with investments");
+
+      const { userData, userError } = await supabase
+        .from("Users")
+        .insert([{ user_id: "snjnsj", investor_id: data[0].id }]);
+
+      if (userError) throw new Error("Something went wrong");
 
       localStorage.removeItem("investorData");
       router.push(`/investor/${data[0].id}`);

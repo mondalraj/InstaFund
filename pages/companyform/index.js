@@ -18,7 +18,9 @@ export default function Companyform() {
     }
   }, []);
   const onSubmit = (data) => {
-    let ans = window.confirm("Are you sure you want to submit this part of the form and move ahead as you would not be able to refill this again.")
+    let ans = window.confirm(
+      "Are you sure you want to submit this part of the form and move ahead as you would not be able to refill this again."
+    );
     if (ans) {
       localStorage.setItem("formData", JSON.stringify(data));
       router.push("/companyform/funding");
@@ -55,7 +57,7 @@ export default function Companyform() {
                     placeholder="Type here"
                     className="input input-bordered w-full max-w-xs"
                     required
-                    {...register("companyName")}
+                    {...register("name")}
                   />
                 </div>
                 <div className="form-control w-full max-w-xs">
@@ -67,7 +69,7 @@ export default function Companyform() {
                     placeholder="Type here"
                     className="input input-bordered w-full max-w-xs"
                     required
-                    {...register("companyEmail")}
+                    {...register("email")}
                   />
                 </div>
                 <div className="form-control w-full max-w-xs">
@@ -75,11 +77,11 @@ export default function Companyform() {
                     <span className="label-text">Company found year</span>
                   </label>
                   <input
-                    type="date"
-                    placeholder="Type here"
+                    type="number"
+                    placeholder="1997"
                     className="input input-bordered w-full max-w-xs"
                     required
-                    {...register("foundedOn")}
+                    {...register("founded")}
                   />
                 </div>
                 <div className="form-control w-full max-w-xs">
@@ -91,7 +93,7 @@ export default function Companyform() {
                     placeholder="approx no. of employees"
                     className="input input-bordered w-full max-w-xs"
                     required
-                    {...register("teamSize")}
+                    {...register("size")}
                   />
                 </div>
                 <div className="form-control w-full max-w-xs">
@@ -120,7 +122,7 @@ export default function Companyform() {
                   </label>
                   <select
                     className="select select-bordered"
-                    {...register("industry")}
+                    {...register("category")}
                   >
                     <option disabled selected>
                       Pick one
@@ -157,7 +159,7 @@ export default function Companyform() {
                   <input
                     type="url"
                     className="input input-bordered w-full "
-                    {...register("fb")}
+                    {...register("facebook")}
                   />
                 </div>
                 <div className="form-control w-full mx-auto">
@@ -179,7 +181,7 @@ export default function Companyform() {
                   <input
                     type="url"
                     className="input input-bordered w-full"
-                    {...register("linkedin")}
+                    {...register("linkedIn")}
                   />
                 </div>
                 <div className="form-control w-full mx-auto">
@@ -193,7 +195,7 @@ export default function Companyform() {
                     className="input input-bordered w-full "
                     maxLength={100}
                     required
-                    {...register("description")}
+                    {...register("bio")}
                   />
                 </div>
                 <div className="form-control w-full mx-auto">
@@ -203,7 +205,7 @@ export default function Companyform() {
                     </span>
                   </label>
                   <textarea
-                    {...register("problemStatement")}
+                    {...register("problem")}
                     className="textarea"
                     placeholder="Elaborate how customers see you as a problem solver "
                     required

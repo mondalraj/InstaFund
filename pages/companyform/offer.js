@@ -6,6 +6,8 @@ import {
   location,
 } from "../../components/companyList/data";
 import { useForm } from "react-hook-form";
+import { supabase } from "../../utils/supabaseClient";
+
 import { useRouter } from "next/router";
 
 export default function Offer() {
@@ -21,14 +23,32 @@ export default function Offer() {
   //       router.push("companyform/funding");
   //     }
   //   }, []);
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     let ans = window.confirm(
       "Are you sure you want to submit this part of the form and move ahead as you would not be able to refill this again."
     );
     if (ans) {
-      localStorage.clear("formData");
-      localStorage.clear("fundingRound")
-      router.push("/company");
+      const formData = JSON.parse(localStorage.getItem("formData"));
+      const fundingData = JSON.parse(localStorage.getItem("fundingRound"));
+      const companyData = { ...formData, ...data };
+
+      try {
+        const { data, error } = await supabase
+          .from("Company")
+          .insert([{ ...companyData }]);
+
+        fundingData = fundingData.map((item) => {
+          return { ...item, company_id: data[0].id };
+        });
+        const { funds, fundError } = await supabase
+          .from("Fundings")
+          .insert(fundingData);
+        if (fundError) throw new Error("Something went wrong with funding");
+
+        console.log(funds);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
   console.log(errors);
@@ -47,7 +67,7 @@ export default function Offer() {
                   </label>
                   <label className="input-group">
                     <input
-                      name="amountRaised"
+                      name="raised"
                       type="number"
                       placeholder="0.01"
                       className="input input-bordered w-full"
@@ -63,7 +83,7 @@ export default function Offer() {
                   </label>
                   <label className="input-group">
                     <input
-                      name="amountRaised"
+                      name="equity"
                       type="number"
                       placeholder="10"
                       className="input input-bordered w-full"
@@ -78,10 +98,10 @@ export default function Offer() {
                     <span className="label-text">Funding Type</span>
                   </label>
                   <select
-                    name="fundingType"
+                    name="type"
                     className="select select-bordered"
                     required
-                    {...register("fundingType")}
+                    {...register("type")}
                   >
                     <option disabled selected>
                       Pick one
@@ -110,11 +130,11 @@ export default function Offer() {
               </div>
               <div className="flex justify-end">
                 <input
-                    type="submit"
-                    value="Submit"
-                    className="btn btn-primary w-max"
+                  type="submit"
+                  value="Submit"
+                  className="btn btn-primary w-max"
                 />
-                </div>
+              </div>
             </form>
           </div>
         </div>

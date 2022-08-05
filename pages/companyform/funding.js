@@ -9,12 +9,12 @@ import { Icon } from "@iconify/react";
 export default function funding() {
   const [inputList, setInputList] = useState([
     {
-      amountRaised: null,
-      fundingType: "",
+      raised: null,
+      type: "",
       dateOfFunding: "",
       valuation: null,
-      investorName: "",
-      investorPhotoUrl: "",
+      investor: "",
+      photo_url: "",
     },
   ]);
 
@@ -55,12 +55,12 @@ export default function funding() {
     setInputList([
       ...inputList,
       {
-        amountRaised: null,
-        fundingType: "",
+        raised: null,
+        type: "",
         dateOfFunding: "",
         valuation: null,
-        investorName: "",
-        investorPhotoUrl: "",
+        investor: "",
+        photo_url: "",
       },
     ]);
   };
@@ -88,9 +88,9 @@ export default function funding() {
                         </label>
                         <label className="input-group">
                           <input
-                            name="amountRaised"
+                            name="raised"
                             type="number"
-                            value={x.amountRaised}
+                            value={x.raised}
                             placeholder="0.01"
                             className="input input-bordered w-full max-w-xs"
                             onChange={(e) => handleInputChange(e, i)}
@@ -104,11 +104,11 @@ export default function funding() {
                           <span className="label-text">Funding Type</span>
                         </label>
                         <select
-                          name="fundingType"
+                          name="type"
                           className="select select-bordered w-full max-w-xs"
                           onChange={(e) => handleInputChange(e, i)}
                           required
-                          value={x.fundingType}
+                          value={x.type}
                         >
                           <option disabled selected>
                             Pick one
@@ -158,8 +158,8 @@ export default function funding() {
                         </label>
                         <input
                           type="text"
-                          name="investorName"
-                          value={x.investorName}
+                          name="investor"
+                          value={x.investor}
                           onChange={(e) => handleInputChange(e, i)}
                           placeholder="John Doe (CEO)"
                           className="input input-bordered w-full max-w-xs"
@@ -172,8 +172,8 @@ export default function funding() {
                         </label>
                         <input
                           type="url"
-                          value={x.investorPhotoUrl}
-                          name="investorPhotoUrl"
+                          value={x.photo_url}
+                          name="photo_url"
                           onChange={(e) => handleInputChange(e, i)}
                           placeholder="www.example.com"
                           className="input input-bordered w-full max-w-xs"

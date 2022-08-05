@@ -1,8 +1,16 @@
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import Footer from "../components/commons/Footer";
 import Navbar from "../components/commons/Navbar";
+import { supabase } from "../utils/supabaseClient";
 
 export default function Home() {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    if (supabase.auth.user()) {
+      setUser(supabase.auth.user());
+    }
+  }, []);
   return (
     <div>
       <Navbar />
@@ -23,16 +31,26 @@ export default function Home() {
                 cryptocurrency.
               </p>
               <div className="flex justify-center">
-                <Link href="/auth?type=register">
-                  <button className="inline-flex text-white btn-secondary border-0 py-2 px-6 focus:outline-none rounded text-lg">
-                    Get Started
-                  </button>
-                </Link>
-                <Link href="/auth?type=login">
-                  <button className="ml-4 inline-flex bg-gray-700 border-0 py-2 px-6 focus:outline-none hover:bg-gray-800 text-white rounded text-lg">
-                    Login
-                  </button>
-                </Link>
+                {user ? (
+                  <Link href={`/dashboard/${user.id}`}>
+                    <button className="inline-flex text-white btn-secondary border-0 py-2 px-6 focus:outline-none rounded text-lg">
+                      Go to Dashboard
+                    </button>
+                  </Link>
+                ) : (
+                  <>
+                    <Link href="/auth?type=register">
+                      <button className="inline-flex text-white btn-secondary border-0 py-2 px-6 focus:outline-none rounded text-lg">
+                        Get Started
+                      </button>
+                    </Link>
+                    <Link href="/auth?type=login">
+                      <button className="ml-4 inline-flex bg-gray-700 border-0 py-2 px-6 focus:outline-none hover:bg-gray-800 text-white rounded text-lg">
+                        Login
+                      </button>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
             <div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">

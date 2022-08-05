@@ -1,7 +1,22 @@
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { supabase } from "../../utils/supabaseClient";
 
 const Navbar = () => {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    if (supabase.auth.user()) {
+      setUser(supabase.auth.user());
+    }
+  }, []);
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.log(error);
+      return;
+    }
+    setUser(null);
+  };
   return (
     <header className="sticky top-0 right-0 left-0 text-neutral-focus bg-primary-content z-50">
       <div className="container mx-auto flex flex-wrap px-5 py-3 flex-col md:flex-row items-center">
@@ -21,16 +36,37 @@ const Navbar = () => {
             <a className="mr-5 hover:font-medium cursor-pointer">Jobs</a>
           </Link>
           <Link href="/">
-            <a className="mr-5 hover:font-medium cursor-pointer">Transactions</a>
+            <a className="mr-5 hover:font-medium cursor-pointer">
+              Transactions
+            </a>
           </Link>
         </nav>
         <div className="space-x-3">
-          <Link href="/auth?type=login">
-            <button className="btn btn-secondary btn-outline btn-sm">Login</button>
-          </Link>
-          <Link href="/auth?type=register">
-            <button className="btn btn-secondary btn-sm">Register</button>
-          </Link>
+          {user ? (
+            <>
+              <Link href={`/dashboard/${user.id}`}>
+                <span className="cursor-pointer">
+                  {supabase.auth
+                    .user()
+                    .email.slice(0, supabase.auth.user().email.indexOf("@"))}
+                </span>
+              </Link>
+              <button className="btn btn-sm" onClick={signOut}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link href="/auth?type=login">
+                <button className="btn btn-secondary btn-outline btn-sm">
+                  Login
+                </button>
+              </Link>
+              <Link href="/auth?type=register">
+                <button className="btn btn-secondary btn-sm">Register</button>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </header>

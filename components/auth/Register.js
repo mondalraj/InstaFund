@@ -32,6 +32,7 @@ const Register = () => {
       {
         data: {
           type: type,
+          profile_id: null,
         },
       }
     );
@@ -42,7 +43,8 @@ const Register = () => {
     if (user) {
       setLoading(false);
       console.log(user);
-      Router.reload(window.location.pathname);
+      Notify.success("Check your email to confirm your registration.");
+      // Router.reload(window.location.pathname);
     }
   };
   return (
@@ -98,7 +100,7 @@ const Register = () => {
       </div>
       <input
         type="submit"
-        value="Submit"
+        value={loading ? "Loading..." : "Register"}
         onClick={handleSignUp}
         className="btn btn-info mt-3"
       />

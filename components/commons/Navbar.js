@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../utils/supabaseClient";
 
@@ -15,6 +16,7 @@ const Navbar = () => {
       console.log(error);
       return;
     }
+    Router.reload(window.location.pathname);
     setUser(null);
   };
   return (

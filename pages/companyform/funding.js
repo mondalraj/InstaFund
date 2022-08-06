@@ -27,13 +27,23 @@ export default function funding() {
   }, []);
 
   const handleSubmit = (data) => {
-    let ans = window.confirm(
-      "Are you sure you want to submit this part of the form and move ahead as you would not be able to refill this again."
+    Confirm.show(
+      "Confirmation",
+      "Are you really want to submit this form and move ahead as you would not be able to refill this again.",
+      "Ok",
+      "Cancel",
+      () => {
+        localStorage.setItem("fundingRound", JSON.stringify(inputList));
+        router.push("/companyform/offer");
+      },
+      {
+        width: "350px",
+        okButtonColor: "#fff",
+        okButtonBackground: "#36D399",
+        cancelButtonColor: "#fff",
+        cancelButtonBackground: "#191D24",
+      }
     );
-    if (ans) {
-      localStorage.setItem("fundingRound", JSON.stringify(inputList));
-      router.push("/companyform/funding");
-    }
   };
 
   const handleInputChange = (e, index) => {
@@ -179,6 +189,17 @@ export default function funding() {
                           className="input input-bordered w-full max-w-xs"
                           required
                         />
+                        <p className="text-xs m-1.5 text-gray-500">
+                          Upload photo{" "}
+                          <a
+                            href="https://imgur.com/upload"
+                            target="_blank"
+                            className="underline"
+                          >
+                            here
+                          </a>{" "}
+                          and submit a link
+                        </p>
                       </div>
                       <div className="my-4">
                         {inputList.length !== 1 && (

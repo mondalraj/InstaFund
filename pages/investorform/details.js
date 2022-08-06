@@ -93,11 +93,11 @@ export default function funding() {
 
       if (investError) throw new Error("Something went wrong with investments");
 
-      const { userData, userError } = await supabase
-        .from("Users")
-        .insert([{ user_id: "snjnsj", investor_id: data[0].id }]);
+      // const { userData, userError } = await supabase
+      //   .from("Users")
+      //   .insert([{ user_id: "snjnsj", investor_id: data[0].id }]);
 
-      if (userError) throw new Error("Something went wrong");
+      // if (userError) throw new Error("Something went wrong");
 
       localStorage.removeItem("investorData");
       router.push(`/investor/${data[0].id}`);

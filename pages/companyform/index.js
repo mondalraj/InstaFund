@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import { industries, location } from "../../components/companyList/data";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
+import { Confirm, Notify } from "notiflix";
 
 export default function Companyform() {
+  const [photo, setPhoto] = useState();
   const {
     register,
     handleSubmit,
@@ -17,16 +19,44 @@ export default function Companyform() {
       router.push("companyform/funding");
     }
   }, []);
-  const onSubmit = (data) => {
-    let ans = window.confirm(
-      "Are you sure you want to submit this part of the form and move ahead as you would not be able to refill this again."
-    );
-    if (ans) {
-      localStorage.setItem("formData", JSON.stringify(data));
-      router.push("/companyform/funding");
-    }
+
+  const getBase64 = async () => {
+    return new Promise((resolve, reject) => {
+      let reader = new FileReader();
+      reader.readAsDataURL(photo);
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+    });
   };
-  console.log(errors);
+
+  const onSubmit = async (data) => {
+    if (!photo) {
+      Notify.failure("Please provide a photo", { position: "top-right" });
+      return;
+    }
+
+    const pic = await getBase64();
+    data = { ...data, photo: pic };
+    Confirm.show(
+      "Confirmation",
+      "Are you really want to submit this form and move ahead as you would not be able to refill this again.",
+      "Ok",
+      "Cancel",
+      () => {
+        localStorage.setItem("formData", JSON.stringify(data));
+        router.push("/companyform/funding");
+      },
+      {
+        width: "350px",
+        okButtonColor: "#fff",
+        okButtonBackground: "#36D399",
+        cancelButtonColor: "#fff",
+        cancelButtonBackground: "#191D24",
+      }
+    );
+  };
+
   return (
     <>
       <div className="justify-center flex p-10 h-full">
@@ -35,20 +65,41 @@ export default function Companyform() {
             <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
               <div className="flex relative justify-center">
                 <div
-                  className="tooltip  tooltip-right"
-                  data-tip="Add your company logo here"
+                  className="tooltip  tooltip-top"
+                  data-tip="Add company logo / your photo here"
                 >
                   <label htmlFor="file-input">
-                    <Icon
-                      icon="ic:round-account-circle"
-                      className="text-8xl cursor-pointer"
-                    />
+                    {photo ? (
+                      <div className="relative">
+                        <img
+                          src={URL.createObjectURL(photo)}
+                          alt="Investor Pic"
+                          className="w-32 h-32 rounded-full object-cover"
+                        />
+                        <Icon
+                          icon="entypo:cross"
+                          className="absolute top-0 -right-5 text-xl cursor-pointer"
+                          onClick={() => setPhoto()}
+                        />
+                      </div>
+                    ) : (
+                      <Icon
+                        icon="ic:round-account-circle"
+                        className="text-9xl cursor-pointer"
+                      />
+                    )}
                   </label>
-                  <input type="file" id="file-input" className="hidden" />
+                  <input
+                    type="file"
+                    id="file-input"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => setPhoto(e.target.files[0])}
+                  />
                 </div>
               </div>
               <div className="lg:grid grid-cols-2 gap-y-5 justify-items-center py-5">
-                <div className="form-control w-full max-w-xs ">
+                <div className="form-control w-full max-w-xs">
                   <label className="label">
                     <span className="label-text">Company name</span>
                   </label>

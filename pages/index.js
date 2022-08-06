@@ -11,6 +11,7 @@ export default function Home() {
       setUser(supabase.auth.user());
     }
   }, []);
+  console.log(user);
   return (
     <div>
       <Navbar />

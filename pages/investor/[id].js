@@ -24,7 +24,8 @@ export default function Investor() {
         .select("*,Investments(*),Team_members(*)")
         .eq("id", router.query.id);
       if (error) {
-        router.push("/");
+        router.push("/investorform");
+        return;
       }
       setDetails(data[0]);
       setInvestments(data[0].Investments);

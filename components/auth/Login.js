@@ -1,13 +1,20 @@
 import Link from "next/link";
 import Router from "next/router";
 import { Notify } from "notiflix";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { supabase } from "../../utils/supabaseClient";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const user = supabase.auth.user();
+    if (user) {
+      Router.push("/");
+    }
+  }, []);
 
   const handleLogin = async () => {
     if (email === "" || password === "") {
@@ -26,7 +33,7 @@ const Login = () => {
     if (user) {
       setLoading(false);
       console.log(user);
-      Router.reload(window.location.pathname);
+      Router.push("/");
     }
   };
   return (
@@ -56,7 +63,7 @@ const Login = () => {
       <div className="mt-3">
         New User?{" "}
         <Link href="/auth?type=register">
-          <span className="text-secondary cursor-pointer">Register here.</span>
+          <span className="text-secondary cursor-pointer">Register here</span>
         </Link>
       </div>
     </div>

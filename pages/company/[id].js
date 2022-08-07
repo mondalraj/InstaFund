@@ -2,10 +2,11 @@ import { useState } from "react";
 import { Icon } from "@iconify/react";
 import Head from "next/head";
 import Image from "next/image";
-import Overview from "../components/companyDetails/overview";
-import Funding from "../components/companyDetails/funding";
-import Navbar from "../components/commons/Navbar";
-import Jobs from "../components/companyDetails/jobs";
+
+import Overview from "../../components/companyDetails/overview";
+import Funding from "../../components/companyDetails/funding";
+import Navbar from "../../components/commons/Navbar";
+import Jobs from "../../components/companyDetails/jobs";
 
 export default function Company() {
   const [menu, setMenu] = useState("overview");

@@ -3,6 +3,7 @@ import { fundingTypes } from "../../components/companyList/data";
 import { useForm } from "react-hook-form";
 import { supabase } from "../../utils/supabaseClient";
 import { useRouter } from "next/router";
+import { Notify } from "notiflix";
 
 export default function Offer() {
   const {
@@ -54,16 +55,24 @@ export default function Offer() {
       fundingData = fundingData.map((item) => {
         return { ...item, company_id: data[0].id };
       });
+
       const { funds, fundError } = await supabase
         .from("Fundings")
         .insert(fundingData);
+
       if (fundError) throw new Error("Something went wrong with funding");
+
+      const { user, updateError } = await supabase.auth.update({
+        data: { profile_id: data[0].id },
+      });
+
+      if (updateError) throw new Error("Something went wrong with auth");
 
       localStorage.removeItem("formData");
       localStorage.removeItem("fundingRound");
       // router.push(`/company/${data[0].id}`);
     } catch (error) {
-      console.log(error);
+      Notify.failure(error.message, { position: "top-right" });
     }
   };
 

@@ -1,4 +1,6 @@
+import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Footer from "../components/commons/Footer";
 import Navbar from "../components/commons/Navbar";
@@ -6,14 +8,19 @@ import { supabase } from "../utils/supabaseClient";
 
 export default function Home() {
   const [user, setUser] = useState(null);
+  const router = useRouter();
   useEffect(() => {
-    if (supabase.auth.user()) {
-      setUser(supabase.auth.user());
+    const userData = supabase.auth.user();
+    if (userData) {
+      setUser(userData);
     }
   }, []);
-  console.log(user);
+
   return (
     <div>
+      <Head>
+        <title>InstaFund</title>
+      </Head>
       <Navbar />
       <div>
         <section className="text-gray-400 bg-gray-900 body-font py-10 flex justify-center items-center">
@@ -33,9 +40,11 @@ export default function Home() {
               </p>
               <div className="flex justify-center">
                 {user ? (
-                  <Link href={`/dashboard/${user.id}`}>
+                  <Link
+                    href={`/${user.user_metadata.type}/${user.user_metadata.profile_id}`}
+                  >
                     <button className="inline-flex text-white btn-secondary border-0 py-2 px-6 focus:outline-none rounded text-lg">
-                      Go to Dashboard
+                      Go to profile
                     </button>
                   </Link>
                 ) : (

@@ -34,7 +34,7 @@ export default function funding() {
   useEffect(() => {
     const investorData = JSON.parse(localStorage.getItem("investorData"));
     if (!investorData) router.push("/investorform");
-    if (investorData && investorData.userType === "company") setIsCompany(true);
+    else if (investorData.userType === "company") setIsCompany(true);
   }, []);
 
   const handleSubmit = async (e) => {
@@ -93,11 +93,11 @@ export default function funding() {
 
       if (investError) throw new Error("Something went wrong with investments");
 
-      // const { userData, userError } = await supabase
-      //   .from("Users")
-      //   .insert([{ user_id: "snjnsj", investor_id: data[0].id }]);
+      const { user, updateError } = await supabase.auth.update({
+        data: { profile_id: data[0].id },
+      });
 
-      // if (userError) throw new Error("Something went wrong");
+      if (updateError) throw new Error("Something went wrong with auth");
 
       localStorage.removeItem("investorData");
       router.push(`/investor/${data[0].id}`);

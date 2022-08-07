@@ -4,6 +4,7 @@ import { industries, location } from "../../components/companyList/data";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Confirm, Notify } from "notiflix";
+import { supabase } from "../../utils/supabaseClient";
 
 export default function Companyform() {
   const [photo, setPhoto] = useState();
@@ -15,7 +16,15 @@ export default function Companyform() {
 
   const router = useRouter();
   useEffect(() => {
-    if (localStorage.getItem("formData")) {
+    const userData = supabase.auth.user();
+    if (!userData) router.push("/auth?type=login");
+    else if (userData.user_metadata.type === "investor") {
+      router.push("/investorform");
+    } else if (userData.user_metadata.profile_id) {
+      router.push(
+        `/${userData.user_metadata.type}/${userData.user_metadata.profile_id}`
+      );
+    } else if (localStorage.getItem("formData")) {
       router.push("companyform/funding");
     }
   }, []);

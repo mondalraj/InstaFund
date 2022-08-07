@@ -21,7 +21,9 @@ export default function funding() {
   const router = useRouter();
 
   useEffect(() => {
-    if (localStorage.getItem("fundingRound")) {
+    if (!localStorage.getItem("formData")) {
+      router.push("/companyform");
+    } else if (localStorage.getItem("fundingRound")) {
       router.push("/companyform/offer");
     }
   }, []);

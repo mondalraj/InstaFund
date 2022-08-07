@@ -24,9 +24,9 @@ export default function Investor() {
         .select("*,Investments(*),Team_members(*)")
         .eq("id", router.query.id);
       if (error) {
-        router.push("/");
+        router.push("/investorform");
+        return;
       }
-      console.log(data[0]);
       setDetails(data[0]);
       setInvestments(data[0].Investments);
       setMembers(data[0].Team_members);
@@ -108,31 +108,10 @@ export default function Investor() {
         <div className="w-4/5 overflow-y-scroll">
           <h1 className="text-2xl font-medium px-10 py-5">Investments</h1>
           <div className="grid grid-cols-3 gap-16 px-10">
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
-            <InvestCard />
+            {investments.length != 0 &&
+              investments?.map((investData, index) => (
+                <InvestCard key={index} data={investData} />
+              ))}
           </div>
         </div>
       </div>

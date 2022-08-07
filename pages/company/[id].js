@@ -1,45 +1,73 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import Head from "next/head";
 import Image from "next/image";
-import Overview from "../components/companyDetails/overview";
-import Funding from "../components/companyDetails/funding";
-import Navbar from "../components/commons/Navbar";
-import Jobs from "../components/companyDetails/jobs";
+import { useRouter } from "next/router";
+import { supabase } from "../../utils/supabaseClient";
+import Overview from "../../components/companyDetails/overview";
+import Funding from "../../components/companyDetails/funding";
+import Navbar from "../../components/commons/Navbar";
+import Jobs from "../../components/companyDetails/jobs";
 
 export default function Company() {
   const [menu, setMenu] = useState("overview");
+  const [profile, setProfile] = useState([]);
+  const [funding, setFunding] = useState([]);
+  const [domain, setDomain] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    (async () => {
+      let { data, error } = await supabase
+        .from("Company")
+        .select("*,Fundings(*)")
+        .eq("id", router.query.id);
+      if (error) {
+        router.push("/companyform");
+        return;
+      }
+      console.log(data);
+      setProfile(data[0]);
+      setFunding(data[0].Fundings);
+      setDomain(new URL(data[0].website).hostname);
+    })();
+  }, [router.isReady]);
 
   return (
     <div className="w-full h-screen flex flex-col overflow-auto">
       <Navbar />
       <div className="w-full flex">
         <Head>
-          <title>Company Name</title>
+          <title>{profile.name}</title>
         </Head>
         <div className="w-1/6 h-full flex flex-col items-center">
           <div className="p-4 m-4 max-w-md max-h-fit">
             <Image
-              src="/Company_Logo.png"
+              src={profile.logoUrl}
               alt="Company Logo"
               width="150"
               height="150"
             />
           </div>
           <div className="bg-base-300 p-2 w-4/5 mx-auto rounded-md drop-shadow-xl">
-            <h1 className="text-xl p-1 font-medium">Company Name</h1>
+            <h1 className="text-xl p-1 font-medium">{profile.name}</h1>
             <div className="my-2">
               <div className="mb-2">
                 <h1 className="font-bold text-lg">Website</h1>
-                <h2>discordapp.com</h2>
+                <h2>
+                  <a href={profile.website} target="_blank">
+                    {domain}
+                  </a>
+                </h2>
               </div>
               <div className="mb-2">
                 <h1 className="font-bold text-lg">Location</h1>
-                <h2>California</h2>
+                <h2>{profile.location}</h2>
               </div>
               <div className="mb-2">
                 <h1 className="font-bold text-lg">Company Size</h1>
-                <h2>100-200 people</h2>
+                <h2>10-{profile.size} people</h2>
               </div>
               <div className="mb-2">
                 <h1 className="font-bold text-lg">Total raised</h1>
@@ -48,7 +76,7 @@ export default function Company() {
               <div className="mb-2">
                 <h1 className="font-bold text-lg">Company Type</h1>
                 <h2 className="badge badge-secondary text-base py-4 mt-2">
-                  Technology
+                  {profile.category}
                 </h2>
               </div>
               <div className="mb-2">
@@ -66,39 +94,43 @@ export default function Company() {
         <div className="w-5/6 h-full my-4">
           <div className="px-10 w-full my-2">
             <div className="flex justify-between items-center">
-              <h1 className="text-3xl text-white">Company Name</h1>
+              <h1 className="text-3xl text-white">{profile.name}</h1>
               <button className="btn btn-outline btn-success rounded-full text-white px-10">
                 Invest Now
               </button>
             </div>
-            <p className="m-4 font-medium">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia,
-              enim iste. A maxime tenetur ipsam nihil, obcaecati nobis! Hic,
-              corporis!
-            </p>
+            <p className="m-4 font-medium">{profile.bio}</p>
             <div className="flex justify-between items-center">
-              <h2 className="text-lg">Founded in 2001</h2>
+              <h2 className="text-lg">Founded in {profile.founded}</h2>
               <div className="flex justify-between items-center gap-x-3">
-                <Icon
-                  icon="akar-icons:linkedin-v1-fill"
-                  color="#0e76a8"
-                  className="text-2xl cursor-pointer"
-                />
-                <Icon
-                  icon="bxl:twitter"
-                  color="#1da1f2"
-                  className="text-2xl cursor-pointer"
-                />
-                <Icon
-                  icon="fe:facebook"
-                  color="#4267b2"
-                  className="text-2xl cursor-pointer"
-                />
-                <Icon
-                  icon="entypo:link"
-                  color="black"
-                  className="text-2xl cursor-pointer"
-                />
+                <a href={profile.linkedIn}>
+                  <Icon
+                    icon="akar-icons:linkedin-v1-fill"
+                    color="#0e76a8"
+                    className="text-2xl cursor-pointer"
+                  />
+                </a>
+                <a href={profile.twitter}>
+                  <Icon
+                    icon="bxl:twitter"
+                    color="#1da1f2"
+                    className="text-2xl cursor-pointer"
+                  />
+                </a>
+                <a href={profile.facebook}>
+                  <Icon
+                    icon="fe:facebook"
+                    color="#4267b2"
+                    className="text-2xl cursor-pointer"
+                  />
+                </a>
+                <a href={profile.website}>
+                  <Icon
+                    icon="entypo:link"
+                    color="black"
+                    className="text-2xl cursor-pointer"
+                  />
+                </a>
               </div>
             </div>
             <div className="divider mb-0"></div>
@@ -134,8 +166,8 @@ export default function Company() {
               </li>
             </ul>
             <div className="divider mt-0 items-start"></div>
-            {menu == "overview" && <Overview />}
-            {menu == "funding" && <Funding />}
+            {menu == "overview" && <Overview desc={profile.problem} />}
+            {menu == "funding" && <Funding data={funding} />}
             {menu == "jobs" && <Jobs />}
           </div>
         </div>

@@ -5,12 +5,16 @@ import { Icon } from "@iconify/react";
 import { useRouter } from "next/router";
 import Login from "../components/auth/Login";
 import Register from "../components/auth/Register";
+import Head from "next/head";
 
 const auth = () => {
   const router = useRouter();
   const { type } = router.query;
   return (
     <div>
+      <Head>
+        <title>Authentication</title>
+      </Head>
       <Navbar />
       <div className="container mx-auto flex justify-center items-stretch mt-24 min-h-[60vh] ">
         <div className="left-col w-1/3 rounded-l-xl shadow-xl bg-gray-900 p-5">

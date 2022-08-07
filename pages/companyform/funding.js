@@ -5,6 +5,7 @@ import { fundingTypes } from "../../components/companyList/data";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Icon } from "@iconify/react";
+import { Confirm } from "notiflix";
 
 export default function funding() {
   const [inputList, setInputList] = useState([
@@ -21,19 +22,32 @@ export default function funding() {
   const router = useRouter();
 
   useEffect(() => {
-    if (localStorage.getItem("fundingRound")) {
+    if (!localStorage.getItem("formData")) {
+      router.push("/companyform");
+    } else if (localStorage.getItem("fundingRound")) {
       router.push("/companyform/offer");
     }
   }, []);
 
-  const handleSubmit = (data) => {
-    let ans = window.confirm(
-      "Are you sure you want to submit this part of the form and move ahead as you would not be able to refill this again."
+  const handleSubmit = () => {
+    Confirm.show(
+      "Confirmation",
+      "Are you really want to submit this form and move ahead as you would not be able to refill this again.",
+      "Ok",
+      "Cancel",
+      () => {
+        console.log("running");
+        localStorage.setItem("fundingRound", JSON.stringify(inputList));
+        router.push("/companyform/offer");
+      },
+      {
+        width: "350px",
+        okButtonColor: "#fff",
+        okButtonBackground: "#36D399",
+        cancelButtonColor: "#fff",
+        cancelButtonBackground: "#191D24",
+      }
     );
-    if (ans) {
-      localStorage.setItem("fundingRound", JSON.stringify(inputList));
-      router.push("/companyform/funding");
-    }
   };
 
   const handleInputChange = (e, index) => {
@@ -67,6 +81,9 @@ export default function funding() {
 
   return (
     <>
+      <Head>
+        <title>Prev Fundings</title>
+      </Head>
       <div className="justify-center flex p-10 h-full">
         <div className="card w-[80%] bg-base-300 shadow-xl">
           <div className="card-body w-full flex">
@@ -76,7 +93,7 @@ export default function funding() {
                 <Icon icon="ant-design:plus-outlined" className="text-2xl" />
               </button>
             </div>
-            <form className="flex flex-col" onSubmit={() => handleSubmit()}>
+            <form className="flex flex-col">
               {inputList.map((x, i) => {
                 return (
                   <div className="flex flex-col" key={i}>
@@ -179,6 +196,17 @@ export default function funding() {
                           className="input input-bordered w-full max-w-xs"
                           required
                         />
+                        <p className="text-xs m-1.5 text-gray-500">
+                          Upload photo{" "}
+                          <a
+                            href="https://imgur.com/upload"
+                            target="_blank"
+                            className="underline"
+                          >
+                            here
+                          </a>{" "}
+                          and submit a link
+                        </p>
                       </div>
                       <div className="my-4">
                         {inputList.length !== 1 && (
@@ -203,9 +231,10 @@ export default function funding() {
                 </div>
                 <div className="flex justify-end">
                   <input
-                    type="submit"
+                    type="button"
                     value="Next"
                     className="btn btn-primary  w-max"
+                    onClick={handleSubmit}
                   />
                 </div>
               </div>

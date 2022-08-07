@@ -5,6 +5,7 @@ import { fundingTypes } from "../../components/companyList/data";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Icon } from "@iconify/react";
+import { Confirm } from "notiflix";
 
 export default function funding() {
   const [inputList, setInputList] = useState([
@@ -28,13 +29,14 @@ export default function funding() {
     }
   }, []);
 
-  const handleSubmit = (data) => {
+  const handleSubmit = () => {
     Confirm.show(
       "Confirmation",
       "Are you really want to submit this form and move ahead as you would not be able to refill this again.",
       "Ok",
       "Cancel",
       () => {
+        console.log("running");
         localStorage.setItem("fundingRound", JSON.stringify(inputList));
         router.push("/companyform/offer");
       },
@@ -79,6 +81,9 @@ export default function funding() {
 
   return (
     <>
+      <Head>
+        <title>Prev Fundings</title>
+      </Head>
       <div className="justify-center flex p-10 h-full">
         <div className="card w-[80%] bg-base-300 shadow-xl">
           <div className="card-body w-full flex">
@@ -88,7 +93,7 @@ export default function funding() {
                 <Icon icon="ant-design:plus-outlined" className="text-2xl" />
               </button>
             </div>
-            <form className="flex flex-col" onSubmit={() => handleSubmit()}>
+            <form className="flex flex-col">
               {inputList.map((x, i) => {
                 return (
                   <div className="flex flex-col" key={i}>
@@ -226,9 +231,10 @@ export default function funding() {
                 </div>
                 <div className="flex justify-end">
                   <input
-                    type="submit"
+                    type="button"
                     value="Next"
                     className="btn btn-primary  w-max"
+                    onClick={handleSubmit}
                   />
                 </div>
               </div>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Head from "next/head";
 import { Icon } from "@iconify/react";
 import { industries, location } from "../../components/companyList/data";
 import { useForm } from "react-hook-form";
@@ -68,6 +69,9 @@ export default function Companyform() {
 
   return (
     <>
+      <Head>
+        <title>Company Form</title>
+      </Head>
       <div className="justify-center flex p-10 h-full">
         <div className="card w-[60%] bg-base-300 shadow-xl">
           <div className="card-body w-full flex">

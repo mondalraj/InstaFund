@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Head from "next/head";
 import { fundingTypes } from "../../components/companyList/data";
 import { useForm } from "react-hook-form";
 import { supabase } from "../../utils/supabaseClient";
@@ -78,6 +79,9 @@ export default function Offer() {
 
   return (
     <>
+      <Head>
+        <title>Want to raise !!</title>
+      </Head>
       <div className="justify-center flex p-10 h-full">
         <div className="card w-[60%] bg-base-300 shadow-xl">
           <div className="card-body w-full flex">

@@ -34,6 +34,18 @@ export default function Company() {
     })();
   }, [router.isReady]);
 
+  const formatCash = (n) => {
+    if (n < 1e3) return n;
+    if (n >= 1e3 && n < 1e6) return +(n / 1e3).toFixed(1) + " K";
+    if (n >= 1e6 && n < 1e9) return +(n / 1e6).toFixed(1) + " M";
+    if (n >= 1e9 && n < 1e12) return +(n / 1e9).toFixed(1) + " B";
+    if (n >= 1e12) return +(n / 1e12).toFixed(2) + " T";
+  };
+
+  const totalRaised = formatCash(
+    funding.reduce((total, data) => total + data.raised, 0)
+  );
+
   return (
     <div className="w-full h-screen flex flex-col overflow-auto">
       <Navbar />
@@ -44,7 +56,7 @@ export default function Company() {
         <div className="w-1/6 h-full flex flex-col items-center">
           <div className="p-4 m-4 max-w-md max-h-fit">
             <Image
-              src={profile.logoUrl}
+              src={profile.logoUrl || "/Company_Logo.png"}
               alt="Company Logo"
               width="150"
               height="150"
@@ -71,7 +83,7 @@ export default function Company() {
               </div>
               <div className="mb-2">
                 <h1 className="font-bold text-lg">Total raised</h1>
-                <h2>$478.3 M</h2>
+                <h2>{totalRaised} Tez</h2>
               </div>
               <div className="mb-2">
                 <h1 className="font-bold text-lg">Company Type</h1>
@@ -167,7 +179,7 @@ export default function Company() {
             </ul>
             <div className="divider mt-0 items-start"></div>
             {menu == "overview" && <Overview desc={profile.problem} />}
-            {menu == "funding" && <Funding data={funding} />}
+            {menu == "funding" && <Funding data={funding} ask={profile.ask} />}
             {menu == "jobs" && <Jobs />}
           </div>
         </div>

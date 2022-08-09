@@ -74,20 +74,20 @@ export default function Transaction() {
           </button>
         </div>
         <div className="flex gap-x-4 px-20 py-5">
-          <label for="schedule-meet" class="btn btn-info modal-button">
+          <label htmlFor="schedule-meet" className="btn btn-info modal-button">
             Schedule a Meeting
           </label>
 
-          <label for="send-proposal" class="btn btn-info modal-button">
+          <label htmlFor="send-proposal" className="btn btn-info modal-button">
             Send Proposal
           </label>
-          <label for="upload-safe" class="btn btn-info modal-button">
+          <label htmlFor="upload-safe" className="btn btn-info modal-button">
             Upload SAFE/SAFT
           </label>
-          <label for="my-modal" class="btn btn-info modal-button">
+          <label htmlFor="my-modal" className="btn btn-info modal-button">
             Send Transaction
           </label>
-          <label for="signed-safe" class="btn btn-info modal-button">
+          <label htmlFor="signed-safe" className="btn btn-info modal-button">
             Upload Signed SAFE/SAFT
           </label>
         </div>

@@ -28,11 +28,11 @@ const Login = () => {
     });
     if (error) {
       setLoading(false);
+      setPassword("");
       Notify.failure(error.message);
     }
     if (user) {
       setLoading(false);
-      console.log(user);
       Router.push("/");
     }
   };

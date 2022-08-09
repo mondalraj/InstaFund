@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 
 const ScheduleMeet = () => {
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [meetLink, setMeetLink] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(date, time, meetLink);
+  };
   return (
     <form>
       <input type="checkbox" id="schedule-meet" class="modal-toggle" />
@@ -14,16 +22,29 @@ const ScheduleMeet = () => {
           </label>
           <h3 class="text-2xl font-bold">Schedule a Meeting</h3>
           <div className=" flex justify-between gap-4 my-4">
-            <input type="date" class="input input-bordered w-full" />
-            <input type="time" class="input input-bordered w-full" />
+            <input
+              type="date"
+              class="input input-bordered w-full"
+              onChange={(e) => setDate(e.target.value)}
+            />
+            <input
+              type="time"
+              class="input input-bordered w-full"
+              onChange={(e) => setTime(e.target.value)}
+            />
           </div>
 
           <input
             type="text"
             placeholder="Enter Meeting Link"
             class="input input-bordered w-full"
+            value={meetLink}
+            onChange={(e) => setMeetLink(e.target.value)}
           />
-          <button class="btn btn-outline btn-info my-4 w-1/3 text-center">
+          <button
+            class="btn btn-outline btn-info my-4 w-1/3 text-center"
+            onClick={handleSubmit}
+          >
             Submit
           </button>
         </div>

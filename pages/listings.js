@@ -10,7 +10,12 @@ export default function Listings() {
       <Navbar />
       <div className="w-full">
         <div className="p-5 flex flex-col">
-          <div className="w-[95%] bg-gray-400 p-28 m-10">hi</div>
+          <div className="w-full my-10 relative bg-black">
+            <img src="https://i.imgur.com/OT5RjT8.png" className="opacity-60" />
+            <div className="absolute top-2/3 left-0 right-0 z-50 text-center text-4xl font-bold text-white">
+              Invest in world-changing companies of your choice.
+            </div>
+          </div>
           <div className="space-y-10">
             <div className="flex gap-10 justify-center">
               <Search width="w-1/2" />

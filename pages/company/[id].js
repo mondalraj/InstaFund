@@ -8,9 +8,11 @@ import Overview from "../../components/companyDetails/overview";
 import Funding from "../../components/companyDetails/funding";
 import Navbar from "../../components/commons/Navbar";
 import Jobs from "../../components/companyDetails/jobs";
+import Link from "next/link";
 
 export default function Company() {
   const [menu, setMenu] = useState("overview");
+  const [user, setUser] = useState("");
   const [profile, setProfile] = useState([]);
   const [funding, setFunding] = useState([]);
   const [domain, setDomain] = useState("");
@@ -18,6 +20,15 @@ export default function Company() {
 
   useEffect(() => {
     if (!router.isReady) return;
+
+    const userData = supabase.auth.user();
+    if (userData && userData.user_metadata.profile_id) {
+      if (userData.app_metadata.type === "investor") {
+        setUser("investor");
+      } else if (userData.user_metadata.profile_id === router.query.id) {
+        setUser("company");
+      }
+    }
     (async () => {
       let { data, error } = await supabase
         .from("Company")
@@ -27,7 +38,6 @@ export default function Company() {
         router.push("/companyform");
         return;
       }
-      console.log(data);
       setProfile(data[0]);
       setFunding(data[0].Fundings);
       setDomain(new URL(data[0].website).hostname);
@@ -107,9 +117,13 @@ export default function Company() {
           <div className="px-10 w-full my-2">
             <div className="flex justify-between items-center">
               <h1 className="text-3xl text-white">{profile.name}</h1>
-              <button className="btn btn-outline btn-success rounded-full text-white px-10">
-                Invest Now
-              </button>
+              {user && (
+                <Link href={`/transaction`}>
+                  <button className="btn btn-outline btn-success rounded-full text-white px-10 capitalize">
+                    {user == "company" ? "Transactions" : "Invest Now"}
+                  </button>
+                </Link>
+              )}
             </div>
             <p className="m-4 font-medium">{profile.bio}</p>
             <div className="flex justify-between items-center">

@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 
 const SignedSafe = () => {
+  const [document, setDocument] = useState();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(document);
+  };
+
   return (
     <form>
       <input type="checkbox" id="signed-safe" class="modal-toggle" />
@@ -13,10 +20,15 @@ const SignedSafe = () => {
             ✕
           </label>
           <h3 class="text-2xl font-bold">Upload Signed SAFE/SAFT document</h3>
-
-          <input type="file" class="input input-bordered w-full my-4" />
-
-          <button class="btn btn-outline btn-info my-4 w-1/3 text-center">
+          <input
+            type="file"
+            class="input input-bordered w-full my-4"
+            onChange={(e) => setDocument(e.target.files[0])}
+          />
+          <button
+            class="btn btn-outline btn-info my-4 w-1/3 text-center"
+            onClick={handleSubmit}
+          >
             Submit
           </button>
         </div>

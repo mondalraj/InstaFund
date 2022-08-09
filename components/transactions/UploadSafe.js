@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 
 const UploadSafe = () => {
+  const [document, setDocument] = useState();
+  const [amount, setAmount] = useState();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(document, amount);
+  };
   return (
     <form>
       <input type="checkbox" id="upload-safe" class="modal-toggle" />
@@ -14,7 +21,11 @@ const UploadSafe = () => {
           </label>
           <h3 class="text-2xl font-bold">Upload SAFE/SAFT document</h3>
 
-          <input type="file" class="input input-bordered w-full my-4" />
+          <input
+            type="file"
+            class="input input-bordered w-full my-4"
+            onChange={(e) => setDocument(e.target.files[0])}
+          />
           <label class="label">
             <span class="label-text">Enter amount (tez)</span>
           </label>
@@ -23,10 +34,15 @@ const UploadSafe = () => {
               type="number"
               placeholder="100.01"
               class="input input-bordered"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
             />
             <span>tez</span>
           </label>
-          <button class="btn btn-outline btn-info my-4 w-1/3 text-center">
+          <button
+            class="btn btn-outline btn-info my-4 w-1/3 text-center"
+            onClick={handleSubmit}
+          >
             Submit
           </button>
         </div>

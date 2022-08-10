@@ -1,7 +1,5 @@
 Investor Form details (previous investments) optional
-Remove team members for individual investor
 Make company profile page dynamic
-Invest now button for investor visiting company
 View conversations with investors for company
 Investor Listing Page
 

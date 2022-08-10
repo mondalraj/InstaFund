@@ -55,7 +55,7 @@ export default function Companyform() {
       "Cancel",
       () => {
         localStorage.setItem("formData", JSON.stringify(data));
-        router.push("/companyform/funding");
+        router.push("/companyform/founders");
       },
       {
         width: "350px",

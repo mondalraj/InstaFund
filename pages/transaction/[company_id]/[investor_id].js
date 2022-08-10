@@ -10,12 +10,31 @@ import SendProposal from "../../../components/transactions/SendProposal";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { supabase } from "../../../utils/supabaseClient";
+import { getActiveAccount, Tezos } from "../../../utils/tezos";
+import { Notify } from "notiflix";
 
 export default function Transaction() {
   const router = useRouter();
   const { company_id, investor_id } = router.query;
   const [userType, setUserType] = useState("");
   const [userProfileId, setUserProfileId] = useState("");
+  const [investorWalletConnected, setInvestorWalletConnected] = useState(false);
+  const [transactionLoading, setTransactionLoading] = useState(false);
+
+  const handleTransaction = async () => {
+    if (!investorWalletConnected) {
+      let activeAccount = await getActiveAccount();
+      setInvestorWalletConnected(true);
+    }
+    const op = await Tezos.wallet
+      .transfer({ to: "tz1cJqNSDH9Fp7GNBmCMDhiVNkbGYWbgoM5q", amount: 10 })
+      .send();
+    setTransactionLoading(true);
+    await op.confirmation();
+    setTransactionLoading(false);
+    Notify.success("Transaction Successful");
+  };
+
   useEffect(() => {
     if (!router.isReady) return;
 
@@ -24,7 +43,7 @@ export default function Transaction() {
       setUserProfileId(userData.user_metadata.profile_id);
       if (userData.user_metadata.type === "investor") {
         setUserType("investor");
-      } else if (userData.user_metadata.profile_id === router.query.id) {
+      } else if (userData.user_metadata.profile_id === company_id) {
         setUserType("company");
       }
     }
@@ -107,8 +126,14 @@ export default function Transaction() {
           )}
           {userType === "investor" && (
             <>
-              <label htmlFor="my-modal" className="btn btn-info modal-button">
-                Send Transaction
+              <label
+                htmlFor="my-modal"
+                className={`btn ${
+                  transactionLoading ? "btn-warning" : "btn-info"
+                } modal-button`}
+                onClick={handleTransaction}
+              >
+                {transactionLoading ? "Sending Amount..." : "Send Transaction"}
               </label>
               <label
                 htmlFor="signed-safe"

@@ -11,6 +11,8 @@
   "dependencies": {
     "@iconify/react": "^3.2.2",
     "@supabase/supabase-js": "^1.35.4",
+    "@taquito/beacon-wallet": "^13.0.1",
+    "@taquito/taquito": "^13.0.1",
     "base64-arraybuffer": "^1.0.2",
     "daisyui": "^2.19.1",
     "next": "12.2.2",

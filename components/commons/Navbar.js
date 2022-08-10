@@ -46,7 +46,9 @@ const Navbar = () => {
         <div className="space-x-3">
           {user ? (
             <>
-              <Link href={`/dashboard/${user.id}`}>
+              <Link
+                href={`/${user.user_metadata.type}/${user.user_metadata.profile_id}`}
+              >
                 <span className="cursor-pointer">
                   {supabase.auth
                     .user()

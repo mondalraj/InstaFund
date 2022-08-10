@@ -23,7 +23,7 @@ export default function Company() {
 
     const userData = supabase.auth.user();
     if (userData && userData.user_metadata.profile_id) {
-      if (userData.app_metadata.type === "investor") {
+      if (userData.user_metadata.type === "investor") {
         setUser("investor");
       } else if (userData.user_metadata.profile_id === router.query.id) {
         setUser("company");

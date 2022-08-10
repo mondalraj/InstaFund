@@ -1,16 +1,35 @@
 import { Icon } from "@iconify/react";
 import Image from "next/image";
 import Head from "next/head";
-import Navbar from "../components/commons/Navbar";
-import ReadMore from "../components/transactions/readMore";
-import ScheduleMeet from "../components/transactions/ScheduleMeet";
-import UploadSafe from "../components/transactions/UploadSafe";
-import SignedSafe from "../components/transactions/SignedSafe";
-import SendProposal from "../components/transactions/SendProposal";
+import Navbar from "../../../components/commons/Navbar";
+import ReadMore from "../../../components/transactions/readMore";
+import ScheduleMeet from "../../../components/transactions/ScheduleMeet";
+import UploadSafe from "../../../components/transactions/UploadSafe";
+import SignedSafe from "../../../components/transactions/SignedSafe";
+import SendProposal from "../../../components/transactions/SendProposal";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { supabase } from "../../../utils/supabaseClient";
 
 export default function Transaction() {
-  let text =
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore, impedit at sint hic cupiditate, dolorum assumenda possimus deleniti excepturi dignissimos totam provident magnam quaerat aliquam adipisci dolore nostrum enim asperiores sit similique nam voluptates! Deserunt id nam minus laudantium tempore consectetur nemo autem. Harum ipsum neque libero, inventore ad nihil";
+  const router = useRouter();
+  const { company_id, investor_id } = router.query;
+  const [userType, setUserType] = useState("");
+  const [userProfileId, setUserProfileId] = useState("");
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    const userData = supabase.auth.user();
+    if (userData && userData.user_metadata.profile_id) {
+      setUserProfileId(userData.user_metadata.profile_id);
+      if (userData.user_metadata.type === "investor") {
+        setUserType("investor");
+      } else if (userData.user_metadata.profile_id === router.query.id) {
+        setUserType("company");
+      }
+    }
+  }, [router.isReady]);
+
   return (
     <div className="w-full h-screen flex flex-col overflow-hidden">
       <Head>
@@ -81,15 +100,24 @@ export default function Transaction() {
           <label htmlFor="send-proposal" className="btn btn-info modal-button">
             Send Proposal
           </label>
-          <label htmlFor="upload-safe" className="btn btn-info modal-button">
-            Upload SAFE/SAFT
-          </label>
-          <label htmlFor="my-modal" className="btn btn-info modal-button">
-            Send Transaction
-          </label>
-          <label htmlFor="signed-safe" className="btn btn-info modal-button">
-            Upload Signed SAFE/SAFT
-          </label>
+          {userType === "company" && (
+            <label htmlFor="upload-safe" className="btn btn-info modal-button">
+              Upload SAFE/SAFT
+            </label>
+          )}
+          {userType === "investor" && (
+            <>
+              <label htmlFor="my-modal" className="btn btn-info modal-button">
+                Send Transaction
+              </label>
+              <label
+                htmlFor="signed-safe"
+                className="btn btn-info modal-button"
+              >
+                Upload Signed SAFE/SAFT
+              </label>
+            </>
+          )}
         </div>
         <ul className="bg-slate-600 flex flex-col gap-y-10 px-20 py-4 overflow-y-scroll">
           <li className="flex justify-start">

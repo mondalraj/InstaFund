@@ -11,12 +11,14 @@ import Jobs from "../../components/companyDetails/jobs";
 import Link from "next/link";
 
 export default function Company() {
+  const router = useRouter();
+  const { id } = router.query;
+
   const [menu, setMenu] = useState("overview");
   const [user, setUser] = useState("");
   const [profile, setProfile] = useState([]);
   const [funding, setFunding] = useState([]);
   const [domain, setDomain] = useState("");
-  const router = useRouter();
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -117,13 +119,24 @@ export default function Company() {
           <div className="px-10 w-full my-2">
             <div className="flex justify-between items-center">
               <h1 className="text-3xl text-white">{profile.name}</h1>
-              {user && (
-                <Link href={`/transaction`}>
-                  <button className="btn btn-outline btn-success rounded-full text-white px-10 capitalize">
-                    {user == "company" ? "Transactions" : "Invest Now"}
-                  </button>
-                </Link>
-              )}
+              {user &&
+                (user == "company" ? (
+                  <Link href={`/transaction`}>
+                    <button className="btn btn-outline btn-success rounded-full text-white px-10 capitalize">
+                      Transaction
+                    </button>
+                  </Link>
+                ) : (
+                  <Link
+                    href={`/transaction/${id}/${
+                      supabase.auth.user().user_metadata.profile_id
+                    }`}
+                  >
+                    <button className="btn btn-outline btn-success rounded-full text-white px-10 capitalize">
+                      Invest Now
+                    </button>
+                  </Link>
+                ))}
             </div>
             <p className="m-4 font-medium">{profile.bio}</p>
             <div className="flex justify-between items-center">

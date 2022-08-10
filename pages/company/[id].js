@@ -7,7 +7,7 @@ import { supabase } from "../../utils/supabaseClient";
 import Overview from "../../components/companyDetails/overview";
 import Funding from "../../components/companyDetails/funding";
 import Navbar from "../../components/commons/Navbar";
-import Jobs from "../../components/companyDetails/jobs";
+import Ask from "../../components/companyDetails/ask";
 import Link from "next/link";
 
 export default function Company() {
@@ -16,8 +16,10 @@ export default function Company() {
 
   const [menu, setMenu] = useState("overview");
   const [user, setUser] = useState("");
+  const [ask, setAsk] = useState({});
   const [profile, setProfile] = useState([]);
   const [funding, setFunding] = useState([]);
+  const [founders, setFounders] = useState([]);
   const [domain, setDomain] = useState("");
 
   useEffect(() => {
@@ -34,7 +36,7 @@ export default function Company() {
     (async () => {
       let { data, error } = await supabase
         .from("Company")
-        .select("*,Fundings(*)")
+        .select("*,Fundings(*),Founders(*)")
         .eq("id", router.query.id);
       if (error) {
         router.push("/companyform");
@@ -42,6 +44,13 @@ export default function Company() {
       }
       setProfile(data[0]);
       setFunding(data[0].Fundings);
+      setFounders(data[0].Founders);
+      setAsk({
+        raise: data[0].ask,
+        equity: data[0].equity,
+        series: data[0].type,
+        reason: data[0].reason,
+      });
       setDomain(new URL(data[0].website).hostname);
     })();
   }, [router.isReady]);
@@ -194,20 +203,22 @@ export default function Company() {
               </li>
               <li
                 className={`font-bold text-xl px-4 py-2 border-b-2 ${
-                  menu == "jobs" ? "border-slate-300" : "border-transparent"
+                  menu == "ask" ? "border-slate-300" : "border-transparent"
                 } rounded-sm cursor-pointer`}
-                onClick={() => setMenu("jobs")}
+                onClick={() => setMenu("ask")}
               >
-                Jobs
+                Want to raise
                 <div className="badge badge-base text-white text-sm mx-2">
-                  12
+                  1
                 </div>
               </li>
             </ul>
             <div className="divider mt-0 items-start"></div>
-            {menu == "overview" && <Overview desc={profile.problem} />}
+            {menu == "overview" && (
+              <Overview desc={profile.problem} founders={founders} />
+            )}
             {menu == "funding" && <Funding data={funding} ask={profile.ask} />}
-            {menu == "jobs" && <Jobs />}
+            {menu == "ask" && <Ask data={ask} />}
           </div>
         </div>
       </div>

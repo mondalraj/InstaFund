@@ -24,6 +24,8 @@ export default function funding() {
   useEffect(() => {
     if (!localStorage.getItem("formData")) {
       router.push("/companyform");
+    } else if (!localStorage.getItem("founders")) {
+      router.push("/companyform/founders");
     } else if (localStorage.getItem("fundingRound")) {
       router.push("/companyform/offer");
     }
@@ -36,7 +38,6 @@ export default function funding() {
       "Ok",
       "Cancel",
       () => {
-        console.log("running");
         localStorage.setItem("fundingRound", JSON.stringify(inputList));
         router.push("/companyform/offer");
       },

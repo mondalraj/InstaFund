@@ -50,7 +50,9 @@ export default function Investor() {
                 className="rounded-full"
               />
             </div>
-            <h1 className="text-xl font-medium">{details.designation}</h1>
+            <h1 className="text-xl font-medium text-center">
+              {details.designation}
+            </h1>
           </div>
           <div className="flex flex-col w-3/4">
             <div className="flex gap-x-12">
@@ -95,23 +97,31 @@ export default function Investor() {
         </div>
       </div>
       <div className="flex justify-center w-full h-2/3 bg-base-200">
-        <div className="w-1/5">
-          <h1 className="text-2xl font-medium p-5">Team Members</h1>
-          <div className="flex flex-col gap-y-8 px-5 h-5/6 overflow-y-scroll">
-            {members.length != 0 &&
-              members?.map((member, index) => (
-                <TeamCard key={index} data={member} />
-              ))}
-          </div>
-        </div>
-        <div className="divider lg:divider-horizontal lg:ml-0"></div>
+        {members.length != 0 && (
+          <>
+            <div className="w-1/5">
+              <h1 className="text-2xl font-medium p-5">Team Members</h1>
+              <div className="flex flex-col gap-y-8 px-5 h-5/6 overflow-y-scroll">
+                {members?.map((member, index) => (
+                  <TeamCard key={index} data={member} />
+                ))}
+              </div>
+            </div>
+            <div className="divider lg:divider-horizontal lg:ml-0"></div>
+          </>
+        )}
         <div className="w-4/5 overflow-y-scroll">
           <h1 className="text-2xl font-medium px-10 py-5">Investments</h1>
           <div className="grid grid-cols-3 gap-16 px-10">
-            {investments.length != 0 &&
+            {investments.length != 0 ? (
               investments?.map((investData, index) => (
                 <InvestCard key={index} data={investData} />
-              ))}
+              ))
+            ) : (
+              <p className="text-4xl font-semibold text-center opacity-40 w-full h-full">
+                No investments yet
+              </p>
+            )}
           </div>
         </div>
       </div>

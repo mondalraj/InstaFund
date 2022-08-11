@@ -24,6 +24,7 @@ export default function Offer() {
   const onSubmit = async (data) => {
     const formData = JSON.parse(localStorage.getItem("formData"));
     const fundingData = JSON.parse(localStorage.getItem("fundingRound"));
+    const foundersData = JSON.parse(localStorage.getItem("founders"));
     const photoName = formData.name.trim().split(" ").join("_");
 
     const type = formData.photo.split(";")[0].split("/")[1]; // To get the image type
@@ -53,6 +54,16 @@ export default function Offer() {
 
       if (error) throw new Error("Something wrong with user");
 
+      foundersData = foundersData.map((item) => {
+        return { ...item, company_id: data[0].id };
+      });
+
+      const { founders, founderError } = await supabase
+        .from("Founders")
+        .insert(foundersData);
+
+      if (founderError) throw new Error("Something went wrong with founders");
+
       fundingData = fundingData.map((item) => {
         return { ...item, company_id: data[0].id };
       });
@@ -70,8 +81,9 @@ export default function Offer() {
       if (updateError) throw new Error("Something went wrong with auth");
 
       localStorage.removeItem("formData");
+      localStorage.removeItem("founders");
       localStorage.removeItem("fundingRound");
-      // router.push(`/company/${data[0].id}`);
+      router.push(`/company/${data[0].id}`);
     } catch (error) {
       Notify.failure(error.message, { position: "top-right" });
     }
@@ -98,6 +110,8 @@ export default function Offer() {
                       name="raised"
                       type="number"
                       placeholder="0.01"
+                      min={1000}
+                      step=".01"
                       className="input input-bordered w-full"
                       required
                       {...register("ask")}
@@ -128,6 +142,8 @@ export default function Offer() {
                       name="equity"
                       type="number"
                       placeholder="10"
+                      min={0}
+                      step=".01"
                       className="input input-bordered w-full"
                       required
                       {...register("equity")}

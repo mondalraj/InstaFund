@@ -17,9 +17,20 @@ export default function Transaction() {
   const router = useRouter();
   const { company_id, investor_id } = router.query;
   const [userType, setUserType] = useState("");
+  const [companyData, setCompanyData] = useState([]);
+  const [investorData, setInvestorData] = useState([]);
+  const [transactionData, setTransactionData] = useState({});
   const [userProfileId, setUserProfileId] = useState("");
   //   const [investorWalletConnected, setInvestorWalletConnected] = useState(false);
   const [transactionLoading, setTransactionLoading] = useState(false);
+
+  const formatCash = (n) => {
+    if (n < 1e3) return n;
+    if (n >= 1e3 && n < 1e6) return +(n / 1e3).toFixed(1) + "K";
+    if (n >= 1e6 && n < 1e9) return +(n / 1e6).toFixed(1) + "M";
+    if (n >= 1e9 && n < 1e12) return +(n / 1e9).toFixed(1) + "B";
+    if (n >= 1e12) return +(n / 1e12).toFixed(2) + "T";
+  };
 
   const handleTransaction = async () => {
     // if (!investorWalletConnected) {
@@ -47,6 +58,32 @@ export default function Transaction() {
         setUserType("company");
       }
     }
+
+    (async () => {
+      let comData = await supabase
+        .from("Company")
+        .select("*")
+        .eq("id", company_id);
+      if (comData.error) {
+        router.push(`/company/${company_id}`);
+        return;
+      }
+      setCompanyData(comData.data[0]);
+
+      let investData = await supabase
+        .from("Investors")
+        .select("*")
+        .eq("id", investor_id);
+      if (investData.error) {
+        router.push(`/investor/${investor_id}`);
+        return;
+      }
+      setInvestorData(investData.data[0]);
+      setTransactionData({
+        to: comData.data[0].wallet,
+        amount: comData.data[0].ask,
+      });
+    })();
   }, [router.isReady]);
 
   return (
@@ -60,7 +97,7 @@ export default function Transaction() {
           <div className="flex items-center">
             <div className="p-4 max-w-md max-h-fit">
               <Image
-                src="/Company_Logo.png"
+                src={investorData.picUrl || "/Company_Logo.png"}
                 alt="Company Logo"
                 width="100"
                 height="100"
@@ -68,14 +105,16 @@ export default function Transaction() {
               />
             </div>
             <div>
-              <h1 className="text-2xl font-semibold">Investor Name</h1>
-              <h2 className="font-medium tracking-wider">Designation</h2>
+              <h1 className="text-2xl font-semibold">{investorData.name}</h1>
+              <h2 className="font-medium tracking-wider">
+                {investorData.designation}
+              </h2>
               <div className="flex gap-x-2">
                 <Icon
                   icon="ci:location"
                   className="text-black text-2xl -ml-1.5"
                 />
-                <h3 className="text-md capitalize">los angeles</h3>
+                <h3 className="text-md capitalize">{investorData.location}</h3>
               </div>
             </div>
           </div>
@@ -88,7 +127,7 @@ export default function Transaction() {
           <div className="flex items-center">
             <div className="p-4 max-w-md max-h-fit bg">
               <Image
-                src="/Company_Logo.png"
+                src={companyData.logoUrl || "/Company_Logo.png"}
                 alt="Company Logo"
                 width="100"
                 height="100"
@@ -96,14 +135,16 @@ export default function Transaction() {
               />
             </div>
             <div>
-              <h1 className="text-2xl font-semibold">Company Name</h1>
-              <h2 className="font-medium">23M Tez Fund raised</h2>
+              <h1 className="text-2xl font-semibold">{companyData.name}</h1>
+              <h2 className="font-medium">
+                {formatCash(companyData.ask)} Tez Fund for {companyData.equity}%
+              </h2>
               <div className="flex gap-x-2">
                 <Icon
                   icon="ci:location"
                   className="text-black text-2xl -ml-1.5"
                 />
-                <h3 className="text-md capitalize">california</h3>
+                <h3 className="text-md capitalize">{companyData.location}</h3>
               </div>
             </div>
           </div>
@@ -239,9 +280,13 @@ export default function Transaction() {
           </li>
         </ul>
       </div>
-      <ScheduleMeet />
-      <SendProposal />
-      <UploadSafe />
+      <ScheduleMeet
+        name={{ invest: investorData.name, com: companyData.name }}
+      />
+      <SendProposal
+        name={{ invest: investorData.name, com: companyData.name }}
+      />
+      <UploadSafe wantToRaise={companyData.ask} name={companyData.name} />
       <SignedSafe />
     </div>
   );

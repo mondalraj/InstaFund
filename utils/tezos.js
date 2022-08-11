@@ -13,7 +13,7 @@ const Tezos = new TezosToolkit(RPC_URL);
 
 // Initialize BeaconWallet
 const options = {
-  name: "Tezos Developer Hub",
+  name: DAPP_NAME,
   // iconUrl: "https://tezostaquito.io/img/favicon.svg",
   preferredNetwork: "jakartanet",
   // eventHandlers: {

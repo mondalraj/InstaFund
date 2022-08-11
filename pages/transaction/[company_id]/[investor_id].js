@@ -18,14 +18,14 @@ export default function Transaction() {
   const { company_id, investor_id } = router.query;
   const [userType, setUserType] = useState("");
   const [userProfileId, setUserProfileId] = useState("");
-  const [investorWalletConnected, setInvestorWalletConnected] = useState(false);
+  //   const [investorWalletConnected, setInvestorWalletConnected] = useState(false);
   const [transactionLoading, setTransactionLoading] = useState(false);
 
   const handleTransaction = async () => {
-    if (!investorWalletConnected) {
-      let activeAccount = await getActiveAccount();
-      setInvestorWalletConnected(true);
-    }
+    // if (!investorWalletConnected) {
+    let activeAccount = await getActiveAccount();
+    //   setInvestorWalletConnected(true);
+    // }
     const op = await Tezos.wallet
       .transfer({ to: "tz1cJqNSDH9Fp7GNBmCMDhiVNkbGYWbgoM5q", amount: 10 })
       .send();

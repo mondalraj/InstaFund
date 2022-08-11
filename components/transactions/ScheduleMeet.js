@@ -8,16 +8,26 @@ const ScheduleMeet = ({ name }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(date, time, meetLink);
     const user = supabase.auth.user();
-    const proposalData = {
+    const username =
+      user.user_metadata.type === "company" ? name.com : name.invest;
+    const meetingData = {
       type: "meet",
       role: user.user_metadata.type,
-      title: `${
-        user.user_metadata.type === "company" ? name.com : name.invest
-      } schedule a meeting`,
-      description: "",
+      title: `${username} schedule a meeting`,
+      description: JSON.stringify({
+        desc: `Meeting Scheduled with ${username} on ${new Date(
+          date
+        ).toLocaleDateString("en-us", {
+          weekday: "long",
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })} at ${time}`,
+        link: meetLink,
+      }),
     };
+    console.log(meetingData);
   };
   return (
     <form>

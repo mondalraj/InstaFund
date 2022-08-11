@@ -283,8 +283,10 @@ export default function Transaction() {
       <ScheduleMeet
         name={{ invest: investorData.name, com: companyData.name }}
       />
-      <SendProposal name={investorData.name} />
-      <UploadSafe />
+      <SendProposal
+        name={{ invest: investorData.name, com: companyData.name }}
+      />
+      <UploadSafe wantToRaise={companyData.ask} name={companyData.name} />
       <SignedSafe />
     </div>
   );

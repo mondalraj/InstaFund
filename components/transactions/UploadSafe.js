@@ -1,12 +1,23 @@
 import React, { useState } from "react";
+import { supabase } from "../../utils/supabaseClient";
 
-const UploadSafe = () => {
+const UploadSafe = ({ wantToRaise, name }) => {
   const [document, setDocument] = useState();
-  const [amount, setAmount] = useState();
+  const [amount, setAmount] = useState(wantToRaise);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(document, amount);
+    const type = document.type.split("/")[1];
+
+    const { file, fileError } = await supabase.storage
+      .from("documents")
+      .upload(`${name + "_SAFE_Form"}.${type}`, document, {
+        cacheControl: "1800",
+        upsert: true,
+        contentType: `application/${type}`,
+      });
+
+    if (fileError) throw new Error("Something wrong with upload file");
   };
   return (
     <form>
@@ -20,12 +31,22 @@ const UploadSafe = () => {
             ✕
           </label>
           <h3 className="text-2xl font-bold">Upload SAFE/SAFT document</h3>
-
           <input
             type="file"
+            accept="application/msword,application/pdf"
             className="input input-bordered w-full my-4"
             onChange={(e) => setDocument(e.target.files[0])}
           />
+          <p className="text-xs text-gray-500">
+            <a
+              href={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/investor-avatars/SAFE_SAFT_Form.pdf`}
+              target="_blank"
+              className="underline"
+            >
+              Format
+            </a>{" "}
+            of SAFE/SAFT
+          </p>
           <label className="label">
             <span className="label-text">Enter amount (tez)</span>
           </label>
@@ -35,6 +56,7 @@ const UploadSafe = () => {
               placeholder="100.01"
               className="input input-bordered"
               value={amount}
+              disabled
               onChange={(e) => setAmount(e.target.value)}
             />
             <span>tez</span>

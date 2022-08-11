@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { supabase } from "../../utils/supabaseClient";
 
 const SendProposal = ({ name }) => {
   const [amount, setAmount] = useState();
@@ -7,10 +8,13 @@ const SendProposal = ({ name }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(amount, description);
+    const user = supabase.auth.user();
     const proposalData = {
       type: "proposal",
-      role: "investor",
-      title: name,
+      role: user.user_metadata.type,
+      title: `${
+        user.user_metadata.type === "company" ? name.com : name.invest
+      } sends a proposal`,
       description: description,
     };
   };

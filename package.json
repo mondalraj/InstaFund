@@ -19,7 +19,8 @@
     "notiflix": "^3.2.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-hook-form": "^7.33.1"
+    "react-hook-form": "^7.33.1",
+    "web3.storage": "^4.3.0"
   },
   "devDependencies": {
     "@iconify/react": "^3.2.2",

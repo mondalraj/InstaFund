@@ -5,13 +5,13 @@ import Navbar from "../../../components/commons/Navbar";
 import ReadMore from "../../../components/transactions/readMore";
 import ScheduleMeet from "../../../components/transactions/ScheduleMeet";
 import UploadSafe from "../../../components/transactions/UploadSafe";
-import SignedSafe from "../../../components/transactions/SignedSafe";
 import SendProposal from "../../../components/transactions/SendProposal";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { supabase } from "../../../utils/supabaseClient";
 import { getActiveAccount, Tezos } from "../../../utils/tezos";
 import { Notify } from "notiflix";
+import { Web3Storage } from "web3.storage";
 
 export default function Transaction() {
   const router = useRouter();
@@ -21,8 +21,13 @@ export default function Transaction() {
   const [investorData, setInvestorData] = useState([]);
   const [transactionData, setTransactionData] = useState({});
   const [userProfileId, setUserProfileId] = useState("");
-  //   const [investorWalletConnected, setInvestorWalletConnected] = useState(false);
+  const [document, setDocument] = useState();
+  const [IPFSUrl, setIPFSUrl] = useState(null);
   const [transactionLoading, setTransactionLoading] = useState(false);
+
+  const client = new Web3Storage({
+    token: process.env.WEB3_STORAGE_API_KEY,
+  });
 
   const formatCash = (n) => {
     if (n < 1e3) return n;
@@ -32,20 +37,44 @@ export default function Transaction() {
     if (n >= 1e12) return +(n / 1e12).toFixed(2) + "T";
   };
 
-  const handleTransaction = async () => {
-    // if (!investorWalletConnected) {
-    let activeAccount = await getActiveAccount();
-    //   setInvestorWalletConnected(true);
-    // }
-    const op = await Tezos.wallet
-      .transfer({ to: "tz1cJqNSDH9Fp7GNBmCMDhiVNkbGYWbgoM5q", amount: 10 })
-      .send();
+  const handleTransaction = async (e) => {
+    e.preventDefault();
+    if (!document) {
+      Notify.failure("Please upload a SAFE/SAFT document");
+      return;
+    }
     setTransactionLoading(true);
-    await op.confirmation();
-    setTransactionLoading(false);
-    Notify.success("Transaction Successful");
-  };
+    Notify.success("Transaction is being processed, Please wait...", {
+      timeout: 5000,
+    });
+    const rootCid = await client.put(document, {
+      name: document[0].name,
+    });
+    setIPFSUrl(
+      `https://${rootCid}.ipfs.dweb.link/${encodeURI(document[0].name)}`
+    );
+    const res = await client.get(rootCid); // Web3Response
+    const files = await res.files(); // Web3File[]
+    // console.log(files[0], IPFSUrl);
 
+    await getActiveAccount();
+    try {
+      const op = await Tezos.wallet.transfer(transactionData).send();
+      setTransactionLoading(true);
+      await op.confirmation();
+      setTransactionLoading(false);
+      Notify.success("Transaction Successful");
+    } catch {
+      setTransactionLoading(false);
+      Notify.failure(
+        "Transaction Failed, Issue is validating the wallet address of the company",
+        {
+          position: "right-bottom",
+          width: "360px",
+        }
+      );
+    }
+  };
   useEffect(() => {
     if (!router.isReady) return;
 
@@ -168,19 +197,12 @@ export default function Transaction() {
           {userType === "investor" && (
             <>
               <label
-                htmlFor="my-modal"
+                htmlFor="signed-safe"
                 className={`btn ${
                   transactionLoading ? "btn-warning" : "btn-info"
                 } modal-button`}
-                onClick={handleTransaction}
               >
                 {transactionLoading ? "Sending Amount..." : "Send Transaction"}
-              </label>
-              <label
-                htmlFor="signed-safe"
-                className="btn btn-info modal-button"
-              >
-                Upload Signed SAFE/SAFT
               </label>
             </>
           )}
@@ -287,7 +309,33 @@ export default function Transaction() {
         name={{ invest: investorData.name, com: companyData.name }}
       />
       <UploadSafe wantToRaise={companyData.ask} name={companyData.name} />
-      <SignedSafe />
+      <form>
+        <input type="checkbox" id="signed-safe" className="modal-toggle" />
+        <div className="modal bg-black/60">
+          <div className="modal-box w-1/2 max-w-5xl relative text-center">
+            <label
+              htmlFor="signed-safe"
+              className="btn btn-sm btn-circle absolute right-2 top-2"
+            >
+              ✕
+            </label>
+            <h3 className="text-2xl font-bold">
+              Upload Signed SAFE/SAFT document
+            </h3>
+            <input
+              type="file"
+              className="input input-bordered w-full my-4"
+              onChange={(e) => setDocument(e.target.files)}
+            />
+            <button
+              className="btn btn-outline btn-info my-4 w-1/3 text-center"
+              onClick={handleTransaction}
+            >
+              {transactionLoading ? "Sending Amount..." : "Submit"}
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   );
 }

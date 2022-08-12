@@ -11,7 +11,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "../../../utils/supabaseClient";
 import { getActiveAccount, Tezos } from "../../../utils/tezos";
 import { Notify } from "notiflix";
-import { Web3Storage } from "web3.storage";
+// import { Web3Storage } from "web3.storage";
+import { Web3Storage } from "web3.storage/dist/bundle.esm.min.js";
 
 export default function Transaction() {
   const router = useRouter();
@@ -79,7 +80,8 @@ export default function Transaction() {
     if (!router.isReady) return;
 
     const userData = supabase.auth.user();
-    if (userData && userData.user_metadata.profile_id) {
+    if (!userData) router.push("/");
+    if (userData.user_metadata.profile_id) {
       setUserProfileId(userData.user_metadata.profile_id);
       if (userData.user_metadata.type === "investor") {
         setUserType("investor");
@@ -112,6 +114,27 @@ export default function Transaction() {
         to: comData.data[0].wallet,
         amount: comData.data[0].ask,
       });
+
+      const newTransaction = {
+        company_id: comData.data[0].id,
+        investor_id: investData.data[0].id,
+        is_active: true,
+        transaction_amount: comData.data[0].ask,
+        messages: [],
+      };
+
+      if (!userData.user_metadata.transaction_id) {
+        const { data, error } = await supabase
+          .from("Transaction")
+          .insert([newTransaction]);
+        if (error) {
+          Notify.failure("Something went wrong with the transaction");
+          return;
+        }
+        const { user, updateError } = await supabase.auth.update({
+          data: { transaction_id: data[0].id },
+        });
+      }
     })();
   }, [router.isReady]);
 

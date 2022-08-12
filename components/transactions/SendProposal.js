@@ -5,9 +5,8 @@ const SendProposal = ({ name }) => {
   const [amount, setAmount] = useState();
   const [description, setDescription] = useState();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(amount, description);
     const user = supabase.auth.user();
     const proposalData = {
       type: "proposal",
@@ -17,7 +16,17 @@ const SendProposal = ({ name }) => {
       } sends a proposal`,
       description: description,
     };
+    const { data, error } = await supabase
+      .from("Message")
+      .insert([proposalData]);
+    //   if(user.user_metadata.transaction_id){
+    //     const { data, error } = await supabase
+    // .from('Transaction')
+    // .update({  })
+    // .match({ id: user.user_metadata.transaction_id })
+    // }
   };
+
   return (
     <form>
       <input type="checkbox" id="send-proposal" className="modal-toggle" />

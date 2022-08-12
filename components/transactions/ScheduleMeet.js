@@ -6,7 +6,7 @@ const ScheduleMeet = ({ name }) => {
   const [time, setTime] = useState("");
   const [meetLink, setMeetLink] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const user = supabase.auth.user();
     const username =
@@ -27,7 +27,15 @@ const ScheduleMeet = ({ name }) => {
         link: meetLink,
       }),
     };
-    console.log(meetingData);
+    const { data, error } = await supabase
+      .from("Message")
+      .insert([meetingData]);
+    //   if(user.user_metadata.transaction_id){
+    //     const { data, error } = await supabase
+    // .from('Transaction')
+    // .update({  })
+    // .match({ id: user.user_metadata.transaction_id })
+    // }
   };
   return (
     <form>
